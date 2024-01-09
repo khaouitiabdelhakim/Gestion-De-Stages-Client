@@ -1,16 +1,34 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button } from '@mui/material';
+import React , { useState } from 'react';
+import { Box, AppBar, Toolbar, styled, Stack, IconButton, Badge, Button, Snackbar,SnackbarContent, } from '@mui/material';
 import PropTypes from 'prop-types';
 
 // components
 import Profile from './Profile';
-import { IconBellRinging, IconMenu } from '@tabler/icons';
+
+import { IconBellRinging, IconMenu  } from '@tabler/icons';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Header = (props) => {
 
   // const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   // const lgDown = useMediaQuery((theme) => theme.breakpoints.down('lg'));
+  const [notifications, setNotifications] = useState([]);
+  const generateRandomNotification = () => {
+    const messages = [
+      'Nouveau message reçu!',
+      'Vous avez un rappel pour demain.',
+    ];
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    return messages[randomIndex];
+  };
+  const handleNotificationClick = () => {
+    const newNotification = generateRandomNotification();
+    setNotifications([...notifications, newNotification]);
+  };
 
+  const clearNotifications = () => {
+    setNotifications([]);
+  };
 
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
@@ -44,7 +62,7 @@ const Header = (props) => {
         </IconButton>
 
 
-        <IconButton
+        {/* <IconButton
           size="large"
           aria-label="show 11 new notifications"
           color="inherit"
@@ -60,15 +78,45 @@ const Header = (props) => {
             <IconBellRinging size="21" stroke="1.5" />
           </Badge>
 
+        </IconButton> */}
+        <IconButton
+          size="large"
+          aria-label="show 11 new notifications"
+          color="inherit"
+          onClick={handleNotificationClick}
+        >
+          <Badge badgeContent={notifications.length} color="primary">
+            <IconBellRinging size="21" stroke="1.5" />
+          </Badge>
         </IconButton>
+
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
-          <Button variant="contained" color="primary"  target="_blank" href="https://adminmart.com/product/modernize-react-mui-dashboard-template/">
-            Upgrade to Pro
-          </Button>
+          
           <Profile />
         </Stack>
       </ToolbarStyled>
+        {/* Snackbar pour afficher les notifications */}
+        <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={notifications.length > 0}
+        autoHideDuration={6000}
+        onClose={clearNotifications}
+      >
+        <Stack spacing={2} sx={{ width: '100%' }}>
+          {notifications.map((message, index) => (
+            <SnackbarContent
+              key={index}
+              message={message}
+              action={
+                <IconButton size="small" aria-label="close" color="inherit" onClick={clearNotifications}>
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              }
+            />
+          ))}
+        </Stack>
+      </Snackbar>
     </AppBarStyled>
   );
 };

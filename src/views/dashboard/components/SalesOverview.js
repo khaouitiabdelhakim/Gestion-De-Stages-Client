@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
 
-
 const SalesOverview = () => {
 
     // select
@@ -41,13 +40,12 @@ const SalesOverview = () => {
                 borderRadiusWhenStacked: 'all',
             },
         },
-
         stroke: {
             show: true,
             width: 5,
             lineCap: "butt",
             colors: ["transparent"],
-          },
+        },
         dataLabels: {
             enabled: false,
         },
@@ -67,7 +65,7 @@ const SalesOverview = () => {
             tickAmount: 4,
         },
         xaxis: {
-            categories: ['16/08', '17/08', '18/08', '19/08', '20/08', '21/08', '22/08', '23/08'],
+            categories: ['Entreprise 1', 'Entreprise 2', 'Entreprise 3', 'Entreprise 4', 'Entreprise 5'], // Noms des entreprises marocaines
             axisBorder: {
                 show: false,
             },
@@ -77,19 +75,15 @@ const SalesOverview = () => {
             fillSeriesColor: false,
         },
     };
+
     const seriescolumnchart = [
         {
-            name: 'Eanings this month',
-            data: [355, 390, 300, 350, 390, 180, 355, 390],
-        },
-        {
-            name: 'Expense this month',
-            data: [280, 250, 325, 215, 250, 310, 280, 250],
-        },
+            name: 'Nombre d\'étudiants',
+            data: [45, 60, 30, 75, 50], // Exemple de nombres aléatoires pour les étudiants par entreprise
+        }
     ];
 
     return (
-
         <DashboardCard title="Sales Overview" action={
             <Select
                 labelId="month-dd"
@@ -98,9 +92,15 @@ const SalesOverview = () => {
                 size="small"
                 onChange={handleChange}
             >
-                <MenuItem value={1}>March 2023</MenuItem>
-                <MenuItem value={2}>April 2023</MenuItem>
-                <MenuItem value={3}>May 2023</MenuItem>
+                <MenuItem value={1}>2023</MenuItem>
+                <MenuItem value={2}>2022</MenuItem>
+                <MenuItem value={3}>2021</MenuItem>
+                <MenuItem value={3}>2020</MenuItem>
+                <MenuItem value={3}>2019</MenuItem>
+
+                <MenuItem value={3}>2018</MenuItem>
+                <MenuItem value={3}>2017</MenuItem>
+
             </Select>
         }>
             <Chart
