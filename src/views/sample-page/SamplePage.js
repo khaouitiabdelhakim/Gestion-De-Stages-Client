@@ -6,10 +6,11 @@ import DashboardCard from '../../components/shared/DashboardCard';
 
 const SamplePage = () => {
   return (
-    <PageContainer title="Sample Page" description="this is Sample page">
+    <PageContainer title="Profile Admin" description="this is profile admin page">
 
       <DashboardCard title="Sample Page">
-        <Typography>This is a sample page</Typography>
+        <Typography>
+        </Typography>
       </DashboardCard>
     </PageContainer>
   );
