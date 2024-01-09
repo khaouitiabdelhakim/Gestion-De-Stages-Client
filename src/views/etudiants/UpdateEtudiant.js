@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-
-// import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-// import Modal from 'react-bootstrap/Modal';
 import { Modal, Button } from 'react-bootstrap';
 import { Box, Typography } from "@mui/material";
   
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
-
-
-
-
-
 
 const UpdateEtudiant = ({etudiant}) => {
 
@@ -74,15 +66,6 @@ const UpdateEtudiant = ({etudiant}) => {
     return (
         <>
             <Box>
-                {/* <Button
-                    color="primary"
-                    style={{ backgroundColor: '#774ef2', color: 'white' }}
-                    variant="contained"
-                    size="large"
-                    onClick={handleShow}
-                >
-                    Modifier étudiant
-                </Button> */}
                 <Button
                     color="secondary"
                     // style={{ backgroundColor: '#774ef2', color: 'white' }}
@@ -95,7 +78,6 @@ const UpdateEtudiant = ({etudiant}) => {
 
             </Box>
               
-        
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modifier un étudiant</Modal.Title>
@@ -191,12 +173,7 @@ const UpdateEtudiant = ({etudiant}) => {
                         <option value="Excellent">Excellent</option>
                     </Form.Select>
                     </Box>
-
-                    {/* <Button variant="primary" onClick={ModifierEtudiant}>
-                        Modifier
-                    </Button> */}
-
-                    </Form>
+                  </Form>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -220,23 +197,10 @@ const UpdateEtudiant = ({etudiant}) => {
                     >
                         Annuler
                     </Button>
-
                 </Modal.Footer>
-
-
-
-
-
-
-            </Modal>
-
-        
-        
+            </Modal>       
         </>
     )
-  
-
-
 };
 
 export default UpdateEtudiant;

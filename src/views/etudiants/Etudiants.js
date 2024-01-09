@@ -7,13 +7,9 @@ import {
     TableHead,
     TableRow,
     Chip,
-
 } from '@mui/material';
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
-
-// import DashboardCard from '../../../components/shared/DashboardCard';
 import DashboardCard from 'src/components/shared/DashboardCard';
-
 import AddEtudiant from './AddEtudiant';
 import UpdateEtudiant from './UpdateEtudiant';
 
@@ -147,14 +143,10 @@ const getFilteredItems = (query, etudiants) => {
     const lowerCaseQuery = query.toLowerCase();
     return etudiants.filter(etudiant => etudiant.nom_etudiant.toLowerCase().includes(lowerCaseQuery))
 }
-
-
  
 const Etudiants = () => {
 
-    
-    const [query, setQuery] = useState("");
-    
+    const [query, setQuery] = useState("");    
     const filteredItems = getFilteredItems(query,etudiants);
 
     // const [etudiants, setEtudiants] = useState([]);
@@ -183,7 +175,6 @@ const Etudiants = () => {
                 </Box>
                 <AddEtudiant />
             </Box>
-                
                 <Table
                     aria-label="simple table"
                     sx={{
@@ -335,9 +326,7 @@ const Etudiants = () => {
                         })}
                     </TableBody>
                 </Table>
-
             </Box>
-
         </DashboardCard>
     );
 };

@@ -29,7 +29,6 @@ const DeleteEtudiant = () => {
         }
     };
 
-
     return (
         <>
             <Box>
@@ -84,21 +83,9 @@ const DeleteEtudiant = () => {
                     </Button>
 
                 </Modal.Footer>
-
-
-
-
-
-
-            </Modal>
-
-        
-        
+            </Modal>      
         </>
     )
-  
-
-
 };
 
 export default DeleteEtudiant;

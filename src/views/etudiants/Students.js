@@ -8,7 +8,6 @@ import Etudiants from './Etudiants';
 const Students = () => {
   return (
     <PageContainer title="Students Page" description="this is Students page">
-
       <DashboardCard title="">
         <Typography></Typography>
         <Grid container spacing={3}>
@@ -18,7 +17,6 @@ const Students = () => {
         </Grid>
       </DashboardCard>
     </PageContainer>
-
   );
 };
 
