@@ -4,16 +4,15 @@ import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
 
 
-const SamplePage = () => {
+const Profile = () => {
   return (
     <PageContainer title="Profile Admin" description="this is profile admin page">
 
       <DashboardCard title="Sample Page">
-        <Typography>
-        </Typography>
+        <Typography>Profile</Typography>
       </DashboardCard>
     </PageContainer>
   );
 };
 
-export default SamplePage;
+export default Profile;

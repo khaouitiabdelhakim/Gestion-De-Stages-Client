@@ -55,6 +55,17 @@ const Menuitems = [
     icon: IconBuildingSkyscraper,
     href: '/entreprise',
   },
+  {
+    navlabel: true,
+    subheader: 'Externe',
+  },
+  {
+    id: uniqueId(),
+    title: 'Profile',
+    icon: IconUserCheck,
+    href: '/sample-page',
+  },
+
   /*
   {
     navlabel: true,

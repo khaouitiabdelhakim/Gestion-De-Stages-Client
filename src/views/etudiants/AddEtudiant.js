@@ -1,21 +1,14 @@
 import React, { useState } from "react";
-
-// import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-// import Modal from 'react-bootstrap/Modal';
 import { Modal, Button } from 'react-bootstrap';
-import { Box, Typography } from "@mui/material";
-  
+import { Box, Typography } from "@mui/material";  
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
-
 
 function AddEtudiant(){
 
     const [show, setShow] = useState(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     const [nom, setNom] = useState("");
     const [prenom, setPrenom] = useState("");
     const [dateNaissance, setDateNaissance] = useState("");
@@ -81,17 +74,6 @@ function AddEtudiant(){
                 </Modal.Header>
                 <Modal.Body>
                 <Form>
-                    {/* <Form.Group className="mb-3" controlId="nomEtudiant">
-                    <Form.Label>Nom</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Nom"
-                        value={nom}
-                        onChange={(e) => setNom(e.target.value)}
-                        autoFocus
-                    />
-                    </Form.Group> */}
-
                     <Box mt="25px">
                         <Typography variant="subtitle1"
                             fontWeight={600} component="label" htmlFor='nom' mb="5px" >Nom
@@ -166,13 +148,6 @@ function AddEtudiant(){
                         <CustomTextField id="anneePromotion" type="number" variant="outlined" fullWidth placeholder="Année de promotion" defaultValue={anneePromotion} onChange={(value) => setAnneePromotion(value)} allowMouseWheel />
                     </Box>
 
-{/* <Box mt="25px">
-    <Typography variant="subtitle9"
-        fontWeight={600} component="label" htmlFor='mention' mb="5px">Mention
-    </Typography>
-    <CustomTextField id="mention" type="text" variant="outlined" fullWidth />
-</Box> */}
-
                     <Box mt="25px">
                         <Typography variant="subtitle9"
                             fontWeight={600} component="label" htmlFor='mention' mb="5px">Mention
@@ -190,48 +165,9 @@ function AddEtudiant(){
                             <option value="Excellent">Excellent</option>
                         </Form.Select>
                     </Box>
-
-
-{/* <Box mt="25px">
-    <Typography variant="subtitle0"
-        fontWeight={600} component="label" htmlFor='mention' mb="5px">phone
-    </Typography>
-    <CustomTextField
-          id="telephone"
-          type="number"
-          variant="outlined"
-          fullWidth
-        />
-</Box> */}
-
-
-                    {/* <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlTextarea1"
-                    >
-                    <Form.Label>Example textarea</Form.Label>
-                    <Form.Control as="textarea" rows={3} />
-                    </Form.Group> */}
                 </Form>
                 </Modal.Body>
                 <Modal.Footer>
-
-                {/* <Button variant="secondary" onClick={handleClose}>
-                    Annuler
-                </Button> */}
-                {/* <Button
-                    color="primary"
-                    variant="contained"
-                    size="large"
-                    onClick={handleClose}
-                    primary
-                    // fullWidth
-                    // component={Link}
-                    // to="/"
-                    // type="submit"
-                >                    
-                Annuler
-                </Button> */}
                 
                 <Button
                 color="primary"
@@ -244,25 +180,20 @@ function AddEtudiant(){
                     Ajouter 
                 </Button>
 
-                <Button
-                    color="primary"
-                    style={{ backgroundColor: '#f0737d', color: 'white' }} // Set the background color and text color  
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    onClick={handleClose}
-                >
-                    Annuler
-                </Button>
-
+                    <Button
+                        color="primary"
+                        style={{ backgroundColor: '#f0737d', color: 'white' }} // Set the background color and text color  
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        onClick={handleClose}
+                    >
+                        Annuler
+                    </Button>
                 </Modal.Footer>
             </Modal>
-
         </>
     )
-
-
 }
-
 
 export default AddEtudiant;

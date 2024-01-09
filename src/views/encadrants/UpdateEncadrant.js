@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { Modal, Button } from 'react-bootstrap';
 import { Box, Typography } from "@mui/material";
-  
+import axios from 'axios';
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
 
 
 const UpdateEncadrant = ({encadrant }) => {
+
 
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
@@ -16,25 +17,46 @@ const UpdateEncadrant = ({encadrant }) => {
     const [prenomEncadrant, setPrenomEncadrant] = useState(encadrant ? encadrant.prenomEncadrant : "");
     const [emailEncadrant, setEmailEncadrant] = useState(encadrant ? encadrant.emailEncadrant : "");
     const [telephoneEncadrant, setTelephoneEncadrant] = useState(encadrant ? encadrant.telephoneEncadrant : "");
+
+    useEffect(() => {
+        // Fetch encadrant data using GET request
+        axios.get(`http://localhost:3500/encadrant/${encadrant.no_encadrant}`) // Assuming you have an ID to identify the encadrant
+          .then(response => {
+            const encadrantData = response.data;
+            console.log(response.data)
+            // Update state variables with the fetched data
+            setNomEncadrant(encadrantData.nom_encadrant);
+            setPrenomEncadrant(encadrantData.prenom_encadrant);
+            setEmailEncadrant(encadrantData.email_encadrant);
+            setTelephoneEncadrant(encadrantData.telephone_encadrant);
+          })
+          .catch(error => console.error('Error fetching encadrant data', error));
+      }, [encadrant.id]); // Make sure to include the necessary dependencies
       
-        const ModifierEncadrant = () => {
-          // Mettez à jour l'étudiant via une API
-          console.log("Données mises à jour :", {
-            id: encadrant.id,
+      const ModifierEncadrant = () => {
+        // Update the encadrant via an API
+        axios.put(`http://localhost:3500/encadrant/${encadrant.no_encadrant}`, {
             nom_encadrant: nomEncadrant,
             prenom_encadrant: prenomEncadrant,
             email_encadrant: emailEncadrant,
             telephone_encadrant: telephoneEncadrant,
-          });
+        })
+        .then(response => {
+            console.log("Données mises à jour :", response.data);
+            // Reset the form fields after a successful update
+            setNomEncadrant("");
+            setPrenomEncadrant("");
+            setEmailEncadrant("");
+            setTelephoneEncadrant("");
+            handleClose();
+            
+        })
 
-        // Réinitialisez les champs après la mise à jour
-        setNomEncadrant("");
-        setPrenomEncadrant("");
-        setEmailEncadrant("");
-        setTelephoneEncadrant("");
-
-        handleClose();
+        .catch(error => console.error('Error updating encadrant data', error));
     };
+    
+          
+ 
 
     useEffect(() => {
         // Mettez à jour les champs lorsque l'étudiant change
