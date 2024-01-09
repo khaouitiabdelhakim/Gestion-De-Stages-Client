@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
+import axios from 'axios';
 import {
     Typography, Box,
     Table,
@@ -12,16 +13,9 @@ import DashboardCard from 'src/components/shared/DashboardCard';
 import UpdateEtudiant from './UpdateEncadrant';
 import AddEncadrant from './AddEncadrant';
 
-const encadrantsData  = [
-    {
-        "id": 1,
-        "no_encadrant": "E001",
-        "nom_encadrant": "Dupont",
-        "prenom_encadrant": "Jean",
-        "email_encadrant": "jean.dupont@example.com",
-        "telephone_encadrant": "+33 6 12 34 56 78",
-    },
-];
+
+
+
 
 const getFilteredItems = (query, encadrants) => {
     if(!query){
@@ -34,7 +28,14 @@ const getFilteredItems = (query, encadrants) => {
 const AllEncadrants = () => {
     
     const [query, setQuery] = useState("");
+    const [encadrantsData, change]  = useState([]) ;
     const filteredItems = getFilteredItems(query,encadrantsData);
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/encadrant')
+          .then(response => change(response.data))
+          .catch(error => console.error('Error fetching notes', error));
+      }, []);
 
     // const [etudiants, setEtudiants] = useState([]);
 
@@ -138,6 +139,11 @@ const AllEncadrants = () => {
                                     <TableCell>
                                         <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
                                             {encadrant.telephone_encadrant}
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
+                                            {encadrant.email_encadrant}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
