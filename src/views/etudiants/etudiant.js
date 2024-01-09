@@ -118,7 +118,6 @@ const StageList = () => {
     const [selectedStageIndex, setSelectedStageIndex] = useState(null);
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
 
-
     const handleEditClick = (index) => {
         console.log("Modification pour l'index :", index);
     };
