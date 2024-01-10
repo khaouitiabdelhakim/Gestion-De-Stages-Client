@@ -33,7 +33,7 @@ const Router = [
       { path: '/Professeurs', exact: true, element: <Professeurs /> },
       { path: '/Encadrants', exact: true, element: <Encadrants /> },
       { path: '/entreprise', exact: true, element: <Entreprise /> },
-      { path: '/sample-page', exact: true, element: <SamplePage /> },
+      { path: '/profile', exact: true, element: <SamplePage /> },
       { path: '/', exact: true, element: <SamplePage /> },
 
 
