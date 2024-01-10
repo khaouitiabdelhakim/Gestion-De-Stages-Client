@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
 import { Grid, Stack, Typography, Avatar } from '@mui/material';
@@ -12,6 +13,16 @@ const YearlyBreakup = () => {
   const primary = theme.palette.primary.main;
   const primarylight = '#ecf2ff';
   const successlight = theme.palette.success.light;
+
+  const [percentageCurrentYear, change_percentageCurrentYear]  = useState(0) ;
+
+  useEffect(() => {
+    axios.get('http://localhost:3500/stage/percentage-completed')
+      .then(response => { change_percentageCurrentYear(Math.floor(response.data.percentage_completed))
+        console.log('percentageCurrentYear',response.data) })
+      .catch(error => console.error('Error fetching percentageCurrentYear', error));
+      
+  }, []);
 
   // chart
   const optionscolumnchart = {
@@ -62,8 +73,7 @@ const YearlyBreakup = () => {
 
   const currentYear = new Date().getFullYear(); // Get the current year
 
-  // Mock percentage for the current year (replace this with your actual percentage calculation)
-  const percentageCurrentYear = 85; // Change this to your actual calculated percentage
+
 
   const seriescolumnchart = [percentageCurrentYear, 100 - percentageCurrentYear];
 

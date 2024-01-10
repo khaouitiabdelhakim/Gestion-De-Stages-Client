@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Select, MenuItem } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import DashboardCard from '../../../components/shared/DashboardCard';
 import Chart from 'react-apexcharts';
 
 const SalesOverview = () => {
+
+    const [entreprises, change_entreprises]  = useState([]) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/stage/entreprise')
+          .then(response => { change_entreprises(response.data)
+            console.log('entreprises',response.data) })
+          .catch(error => console.error('Error fetching notes', error));
+          
+      }, []);
 
     // select
     const [month, setMonth] = React.useState('1');
@@ -65,7 +76,7 @@ const SalesOverview = () => {
             tickAmount: 4,
         },
         xaxis: {
-            categories: ['Atos', 'Capgemini', 'Cnexia tech', 'DXC Technology ', 'IBM'], // Noms des entreprises marocaines
+            categories: entreprises.map(entry => entry.nom_entreprise), // Noms des entreprises marocaines
             axisBorder: {
                 show: false,
             },
@@ -79,12 +90,12 @@ const SalesOverview = () => {
     const seriescolumnchart = [
         {
             name: 'Nombre d\'étudiants',
-            data: [45, 60, 30, 75, 25], // Exemple de nombres aléatoires pour les étudiants par entreprise
+            data: entreprises.map(entry => Number(entry.number_of_stages)), // Exemple de nombres aléatoires pour les étudiants par entreprise
         }
     ];
 
     return (
-        <DashboardCard title="Nombre des étudiant par entreprise " action={
+        <DashboardCard title="Nombre des étudiants par entreprise " action={
             <Select
                 labelId="month-dd"
                 id="month-dd"
@@ -97,7 +108,6 @@ const SalesOverview = () => {
                 <MenuItem value={3}>2021</MenuItem>
                 <MenuItem value={3}>2020</MenuItem>
                 <MenuItem value={3}>2019</MenuItem>
-
                 <MenuItem value={3}>2018</MenuItem>
                 <MenuItem value={3}>2017</MenuItem>
 

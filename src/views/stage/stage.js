@@ -1,116 +1,100 @@
-  import React, { useState } from 'react';
+  import React, { useState,useEffect } from 'react';
+  import axios from 'axios';
+
+
   import {
-    Typography, Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
+    Typography, Select, FormControl,Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
     Chip, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button
   } from '@mui/material';
   import DashboardCard from '../../components/shared/DashboardCard';
   import EditIcon from '@mui/icons-material/Edit';
   import DeleteIcon from '@mui/icons-material/Delete';
 
-  const stages = [
-    {
-      promotion: "2023",
-      nomEtudiant: "Ahmed El Amrani",
-      professeur: "Hassan Moussaoui",
-      encadrant: "Amina Zidane",
-      entreprise: "MarocTech",
-      type: "1A",
-      annee: "2023",
-      compteRendu: "Disponible",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Fatima Zahra Toufik",
-      professeur: "Younes Berrada",
-      encadrant: "Sara El Fassi",
-      entreprise: "InnovMaroc",
-      type: "2A-1",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Youssef Benali",
-      professeur: "Nadia Amrani",
-      encadrant: "Omar Mansouri",
-      entreprise: "TechMaroc",
-      type: "2A-2",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Khadija Mansouri",
-      professeur: "Karim El Kadiri",
-      encadrant: "Nora Cherif",
-      entreprise: "InnoTechMaroc",
-      type: "3A-1",
-      annee: "2023",
-      compteRendu: "Disponible",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Mohamed Bouzidi",
-      professeur: "Loubna Fassi",
-      encadrant: "Said El Mernissi",
-      entreprise: "MarocInnov",
-      type: "3A-2",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Amina El Hamidi",
-      professeur: "Hicham Daoudi",
-      encadrant: "Amal Abbassi",
-      entreprise: "MarocSoft",
-      type: "1A",
-      annee: "2023",
-      compteRendu: "Disponible",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Bilal Fassi",
-      professeur: "Samira Ben Mansour",
-      encadrant: "Karima El Gharbaoui",
-      entreprise: "TechMaroc",
-      type: "2A-1",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Safa Chakir",
-      professeur: "Khalid El Alaoui",
-      encadrant: "Fadwa Bouazza",
-      entreprise: "InnovMaroc",
-      type: "2A-2",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Mehdi Zerouali",
-      professeur: "Rachid El Mounir",
-      encadrant: "Leila El Mokhtar",
-      entreprise: "MarocSoft",
-      type: "3A-1",
-      annee: "2023",
-      compteRendu: "Disponible",
-  },
-  {
-      promotion: "2023",
-      nomEtudiant: "Houda Kabbaj",
-      professeur: "Abdelali El Mansouri",
-      encadrant: "Naima El Khattabi",
-      entreprise: "InnoTechMaroc",
-      type: "3A-2",
-      annee: "2023",
-      compteRendu: "En attente",
-  },
-  ];
+ 
 
   const StageList = () => {
+
+    const [stages, change_stages]  = useState([]) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/stage')
+          .then(response => { change_stages(response.data)
+            console.log('stages',response.data) })
+          .catch(error => console.error('Error fetching notes', error));
+          
+      }, []);
+
+    //all the data
+    const [encadrants, change_encadrants]  = useState([]) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/encadrant')
+          .then(response => change_encadrants(response.data))
+          .catch(error => console.error('Error fetching notes', error));
+      }, []);
+
+
+      const [etudiants, setEtudiants] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3500/etudiant');
+                setEtudiants(response.data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const [entreprises, change_entreprises]  = useState([]) ;
+
+    useEffect(() => {
+      axios.get('http://localhost:3500/entreprise')
+        .then(response => change_entreprises(response.data))
+        .catch(error => console.error('Error fetching notes', error));
+    }, []);
+
+
+    const [promotions, change_promotions]  = useState([]) ;
+
+    useEffect(() => {
+      axios.get('http://localhost:3500/promotion')
+        .then(response => change_promotions(response.data))
+        .catch(error => console.error('Error fetching notes', error));
+    }, []);
+
+    const [types, change_types]  = useState([]) ;
+
+    useEffect(() => {
+      axios.get('http://localhost:3500/type')
+        .then(response => change_types(response.data))
+        .catch(error => console.error('Error fetching notes', error));
+    }, []);
+
+
+    const [professeurs, change_professeurs]  = useState([]) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/professeur')
+          .then(response => {
+            change_professeurs(response.data)
+            console.log(response.data)
+          })
+          .catch(error => console.error('Error fetching notes', error));
+      }, []);
+
+
+      const formatDate = (dateString) => {
+        const options = { year: 'numeric'};
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      };
+
+
+
+
       const [searchText, setSearchText] = useState('');
       const [promotionFilter, setPromotionFilter] = useState('');
       const [yearFilter, setYearFilter] = useState('');
@@ -130,13 +114,49 @@
         setSelectedStage(null);
         setAddDialogOpen(true);
     };
-      const handleAddNewStage = (newStage) => {
-        // Ajouter la logique pour ajouter le nouveau stage à votre tableau de stages
-        // newStage contiendra les informations du nouveau stage provenant du formulaire
-        // setStages([...stages, newStage]);
-        setAddDialogOpen(false);
-    };
+    const handleAddNewStage = async (newStage) => {
+      try {
+        const stageData = {
+          appreciation_stage: newStage.compteRendu,
+          annee_de_stage: new Date(newStage.annee, 0, 1), // Assuming you want the beginning of the year
+          no_etudiant: newStage.etudiant,
+          no_professeur: newStage.professeur,
+          no_encadrant: newStage.encadrant,
+          no_type: newStage.type,
+          no_entreprise: newStage.entreprise
+      };
 
+      console.log('Response sent to backend:', stageData);
+      
+      // Now you can use stageData in your API call
+      fetch('http://localhost:3500/stage', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(stageData),
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('Response from backend:', data);
+      
+          // If needed, you can clear the form or take other actions here
+          setAddDialogOpen(false);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      
+      
+          
+     
+      
+          
+      } catch (error) {
+          console.error('Error adding new stage:', error);
+      }
+  };
+  
       const handleEditClick = (index) => {
         setSelectedStage(stages[index]);
         setSelectedStageIndex(index);
@@ -167,24 +187,13 @@
       setConfirmationDialogOpen(false);
       setSelectedStageIndex(null);
   };
-      const filteredStages = stages.filter(stage => {
-          const searchMatch = (
-              stage.promotion.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.nomEtudiant.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.professeur.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.encadrant.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.type.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.annee.toLowerCase().includes(searchText.toLowerCase()) ||
-              stage.compteRendu.toLowerCase().includes(searchText.toLowerCase())
-          );
+  const filteredStages = stages.filter(stage => {
+    const yearMatch = !yearFilter || (stage.annee && stage.annee_de_stage.toString().toLowerCase().includes(yearFilter.toLowerCase()));
+    const stageTypeMatch = !stageTypeFilter || (stage.no_type && stage.no_type.toString().toLowerCase().includes(stageTypeFilter.toLowerCase()));
 
-          const promotionMatch = !promotionFilter || stage.promotion === promotionFilter;
-          const yearMatch = !yearFilter || stage.annee === yearFilter;
-          const stageTypeMatch = !stageTypeFilter || stage.type === stageTypeFilter;
+    return  yearMatch && stageTypeMatch;
+});
 
-          return searchMatch && promotionMatch && yearMatch && stageTypeMatch;
-      });
       const promotionOptions = [];
       for (let year = 2003; year <= 2025; year++) {
           promotionOptions.push(year.toString());
@@ -214,18 +223,7 @@
                       onChange={(e) => setSearchText(e.target.value)}
                       sx={{ width: '30%', mr: 2 }}
                   />
-                  <TextField
-                      select
-                      label="Promotion"
-                      variant="outlined"
-                      value={promotionFilter}
-                      onChange={(e) => setPromotionFilter(e.target.value)}
-                      sx={{ width: '20%' , mr: 2 }}
-                  >
-                      {promotionOptions.map((option) => (
-                          <MenuItem key={option} value={option}>{option}</MenuItem>
-                      ))}
-                  </TextField>
+                 
                   <TextField
                       select
                       label="Année"
@@ -247,11 +245,11 @@
                       onChange={(e) => setStageTypeFilter(e.target.value)}
                       sx={{ width: '20%'  , mr: 2}}
                   >
-                    <MenuItem value="1A">1A</MenuItem>
-                      <MenuItem value="2A-1">2A-1</MenuItem>
-                      <MenuItem value="2A-2">2A-2</MenuItem>
-                      <MenuItem value="3A-1">3A-1</MenuItem>
-                      <MenuItem value="3A-2">3A-2</MenuItem>
+                    <MenuItem value="1A">11</MenuItem>
+                      <MenuItem value="2A-1">21</MenuItem>
+                      <MenuItem value="2A-2">22</MenuItem>
+                      <MenuItem value="3A-1">31</MenuItem>
+                      <MenuItem value="3A-2">32</MenuItem>
                   </TextField>
               </Box>
               </Box>
@@ -266,8 +264,8 @@
                   >
                       <TableHead>
                       <TableRow>
-                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Promotion</Typography></TableCell>
-                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Nom de l'Étudiant</Typography></TableCell>
+                            
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Étudiant</Typography></TableCell>
                               <TableCell><Typography variant="subtitle1" fontWeight={600}>Professeur</Typography></TableCell>
                               <TableCell><Typography variant="subtitle1" fontWeight={600}>Encadrant</Typography></TableCell>
                               <TableCell><Typography variant="subtitle1" fontWeight={600}>Entreprise</Typography></TableCell>
@@ -280,36 +278,33 @@
                       <TableBody>
                           {filteredStages.map((stage, index) => (
                               <TableRow key={index}>
-                                  <TableCell>{stage.promotion}</TableCell>
-                                  <TableCell>{stage.nomEtudiant}</TableCell>
-                                  <TableCell>{stage.professeur}</TableCell>
-                                  <TableCell>{stage.encadrant}</TableCell>
-                                  <TableCell>{stage.entreprise}</TableCell>
+                                  <TableCell>{stage.nom_etudiant} {stage.prenom_etudiant}</TableCell>
+                                  <TableCell>{stage.nom_professeur} {stage.prenom_professeur}</TableCell>
+                                  <TableCell>{stage.nom_encadrant} {stage.prenom_encadrant}</TableCell>
+                                  <TableCell>{stage.nom_entreprise} </TableCell>
+                        
                                   <TableCell>
-                                      {stage.type === "1A" && (
-                                          <Chip label="1A" color="primary" />
+                                      {stage.no_type === 11 && (
+                                          <Chip label="11" color="primary" />
                                       )}
-                                      {stage.type === "2A-1" && (
-                                          <Chip label="2A-1" color="secondary" />
+                                      {stage.no_type === 21 && (
+                                          <Chip label="21" color="secondary" />
                                       )}
-                                      {stage.type === "2A-2" && (
-                                          <Chip label="2A-2" color="error" />
+                                      {stage.no_type === 22 && (
+                                          <Chip label="22" color="error" />
                                       )}
-                                      {stage.type === "3A-1" && (
-                                          <Chip label="3A-1" color="success" />
+                                      {stage.no_type === 31 && (
+                                          <Chip label="31" color="success" />
                                       )}
-                                      {stage.type === "3A-2" && (
-                                          <Chip label="3A-2" color="warning" />
+                                      {stage.no_type === 32 && (
+                                          <Chip label="32" color="warning" />
                                       )}
                                   </TableCell>
-                                  <TableCell>{stage.annee}</TableCell>
-                                  <TableCell>{stage.compteRendu}</TableCell>
+                                  <TableCell>{formatDate(stage.annee_de_stage)}</TableCell>
+                                  <TableCell>{stage.appreciation_stage}</TableCell>
                                   <TableCell>
                                       <IconButton onClick={() => handleEditClick(index)}>
                                           <EditIcon style={{ color: 'green' }} />
-                                      </IconButton>
-                                      <IconButton onClick={() => handleDeleteClick(index)}>
-                                          <DeleteIcon style={{ color: 'red' }} />
                                       </IconButton>
                                   </TableCell>
                               </TableRow>
@@ -414,60 +409,133 @@
     </DialogActions>
   </Dialog>
 
+
+
+
   <Dialog
     open={addDialogOpen}
     onClose={() => setAddDialogOpen(false)}
   >
     <DialogTitle>Ajouter un nouveau stage</DialogTitle>
     <DialogContent>
-      <TextField
-        label="Promotion"
-        variant="outlined"
-        value={newStage.promotion}
-        onChange={(e) => setNewStage({ ...newStage, promotion: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Nom de l'Étudiant"
-        variant="outlined"
-        value={newStage.nomEtudiant}
-        onChange={(e) => setNewStage({ ...newStage, nomEtudiant: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Professeur"
-        variant="outlined"
-        value={newStage.professeur}
-        onChange={(e) => setNewStage({ ...newStage, professeur: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Encadrant"
-        variant="outlined"
-        value={newStage.encadrant}
-        onChange={(e) => setNewStage({ ...newStage, encadrant: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Entreprise"
-        variant="outlined"
-        value={newStage.entreprise}
-        onChange={(e) => setNewStage({ ...newStage, entreprise: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Type"
-        variant="outlined"
-        value={newStage.type}
-        onChange={(e) => setNewStage({ ...newStage, type: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
+    <Box mt="25px">
+    <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Promotion' mb="5px">
+        Promotion
+    </Typography>
+    <FormControl fullWidth variant="outlined" margin="normal">
+        <Select
+            label="Promotion"
+            value={newStage.promotion}
+            onChange={(e) => setNewStage({ ...newStage, promotion: e.target.value })}
+        >
+            {promotions.map((promotion) => (
+                <MenuItem key={promotion.annee_promotion} value={promotion.annee_promotion}>
+                    {promotion.annee_promotion} 
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+</Box>
+
+
+      <Box mt="25px">
+    <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Etudiant' mb="5px">
+        Étudiant
+    </Typography>
+    <FormControl fullWidth variant="outlined" margin="normal">
+        <Select
+            label="Étudiant"
+            value={newStage.etudiant}
+            onChange={(e) => setNewStage({ ...newStage, etudiant: e.target.value })}
+        >
+            {etudiants.map((etudiant) => (
+                <MenuItem key={etudiant.no_etudiant} value={etudiant.no_etudiant}>
+                    {etudiant.nom_etudiant} {etudiant.prenom_etudiant}
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+</Box>
+
+     <Box mt="25px">
+    <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Professeur' mb="5px">
+        Professeur
+    </Typography>
+    <FormControl fullWidth variant="outlined" margin="normal">
+        <Select
+            label="Professeur"
+            value={newStage.professeur}
+            onChange={(e) => setNewStage({ ...newStage, professeur: e.target.value })}
+        >
+            {professeurs.map((professeur) => (
+                <MenuItem key={professeur.no_professeur} value={professeur.no_professeur}>
+                    {professeur.nom_professeur} {professeur.prenom_professeur}
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+</Box>
+
+     
+
+<Box mt="25px">
+          <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Encadrant' mb="5px">
+              Encadrant
+          </Typography>
+          <FormControl fullWidth variant="outlined" margin="normal">
+              <Select
+                  label="Encadrant"
+                  value={newStage.encadrant}
+                  onChange={(e) => setNewStage({ ...newStage, encadrant: e.target.value })}
+              >
+                  {encadrants.map((encadrant) => (
+                      <MenuItem key={encadrant.no_encadrant} value={encadrant.no_encadrant}>
+                          {encadrant.nom_encadrant} {encadrant.prenom_encadrant}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </FormControl>
+      </Box>
+     
+
+      <Box mt="25px">
+          <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='entreprise' mb="5px">
+              Entreprise
+          </Typography>
+          <FormControl fullWidth variant="outlined" margin="normal">
+              <Select
+                  label="Entreprise"
+                  value={newStage.entreprise}
+                  onChange={(e) => setNewStage({ ...newStage, entreprise: e.target.value })}
+              >
+                  {entreprises.map((entreprise) => (
+                      <MenuItem key={entreprise.no_entreprise} value={entreprise.no_entreprise}>
+                          {entreprise.nom_entreprise}
+                      </MenuItem>
+                  ))}
+              </Select>
+          </FormControl>
+      </Box>
+      
+      <Box mt="25px">
+    <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Type' mb="5px">
+        Type
+    </Typography>
+    <FormControl fullWidth variant="outlined" margin="normal">
+        <Select
+            label="Type"
+            value={newStage.type}
+            onChange={(e) => setNewStage({ ...newStage, type: e.target.value })}
+        >
+            {types.map((type) => (
+                <MenuItem key={type.no_type} value={type.no_type}>
+                    {type.no_type} - Durée: {type.duree} months
+                </MenuItem>
+            ))}
+        </Select>
+    </FormControl>
+</Box>
+
       <TextField
         label="Année"
         variant="outlined"

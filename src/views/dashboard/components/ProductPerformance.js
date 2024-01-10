@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Typography, Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
   Chip, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button
@@ -8,41 +9,20 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-const stages = [
-  {
-    promotion: "2023",
-    nomEtudiant: "Ahmed El Amrani",
-    professeur: "Hassan Moussaoui",
-    encadrant: "Amina Zidane",
-    entreprise: "MarocTech",
-    type: "1A",
-    annee: "2023",
-    compteRendu: "Bien",
-},
-{
-    promotion: "2023",
-    nomEtudiant: "Fatima Zahra Toufik",
-    professeur: "Younes Berrada",
-    encadrant: "Sara El Fassi",
-    entreprise: "InnovMaroc",
-    type: "2A-1",
-    annee: "2023",
-    compteRendu: "Trés Bien",
-},
-{
-    promotion: "2023",
-    nomEtudiant: "Youssef Benali",
-    professeur: "Nadia Amrani",
-    encadrant: "Omar Mansouri",
-    entreprise: "TechMaroc",
-    type: "2A-2",
-    annee: "2023",
-    compteRendu: "Bien",
-},
 
-];
 
 const StageList = () => {
+
+  const [stages, change_stages]  = useState([]) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/stage/recent')
+          .then(response => { change_stages(response.data)
+            console.log('recent stages',response.data) })
+          .catch(error => console.error('Error fetching notes', error));
+          
+      }, []);
+
     const [searchText, setSearchText] = useState('');
     const [promotionFilter, setPromotionFilter] = useState('');
     const [yearFilter, setYearFilter] = useState('');
@@ -58,10 +38,7 @@ const StageList = () => {
       // Ajoute les autres champs ici avec leurs valeurs initiales
     });
 
-    const handleAddStage = () => {
-      setSelectedStage(null);
-      setAddDialogOpen(true);
-  };
+    
     const handleAddNewStage = (newStage) => {
       // Ajouter la logique pour ajouter le nouveau stage à votre tableau de stages
       // newStage contiendra les informations du nouveau stage provenant du formulaire
@@ -87,6 +64,10 @@ const StageList = () => {
     };
 
   
+    const formatDate = (dateString) => {
+      const options = { year: 'numeric'};
+      return new Date(dateString).toLocaleDateString('en-US', options);
+    };
 
     const handleDeleteClick = (index) => {
       setSelectedStageIndex(index);
@@ -104,28 +85,20 @@ const StageList = () => {
     setConfirmationDialogOpen(false);
     setSelectedStageIndex(null);
 };
-    const filteredStages = stages.filter(stage => {
-        const searchMatch = (
-            stage.promotion.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.nomEtudiant.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.professeur.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.encadrant.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.type.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.annee.toLowerCase().includes(searchText.toLowerCase()) ||
-            stage.compteRendu.toLowerCase().includes(searchText.toLowerCase())
-        );
+const filteredStages = stages.filter(stage => {
+  const yearMatch = !yearFilter || (stage.annee && stage.annee_de_stage.toString().toLowerCase().includes(yearFilter.toLowerCase()));
+  const stageTypeMatch = !stageTypeFilter || (stage.no_type && stage.no_type.toString().toLowerCase().includes(stageTypeFilter.toLowerCase()));
 
-        const promotionMatch = !promotionFilter || stage.promotion === promotionFilter;
-        const yearMatch = !yearFilter || stage.annee === yearFilter;
-        const stageTypeMatch = !stageTypeFilter || stage.type === stageTypeFilter;
+  return  yearMatch && stageTypeMatch;
+});
 
-        return searchMatch && promotionMatch && yearMatch && stageTypeMatch;
-    });
-    const promotionOptions = [];
-    for (let year = 2003; year <= 2025; year++) {
-        promotionOptions.push(year.toString());
-    }
+
+
+  const handleVoirPlusClick = () => {
+    // Redirect to the /stage route
+  
+  };
+    
 
     const yearOptions = [];
     for (let year = 2000; year <= 2023; year++) {
@@ -136,66 +109,68 @@ const StageList = () => {
       <DashboardCard
             title="Nouveaux Stages"
             action={
-                <Button variant="outlined" onClick={handleAddStage} style={{ backgroundColor: 'blue', color: 'white' }}>
+                <Button variant="outlined" onClick={handleVoirPlusClick} style={{ backgroundColor: 'blue', color: 'white' }}>
                     Voir plus
                 </Button>
             }> 
 
       
 
-            <Box sx={{ overflow: 'auto', width: '100%' }}>        
-                    <Table
-                    aria-label="simple table"
-                    sx={{
-                        whiteSpace: "nowrap",
-                        mt: 2
-                    }}
-                >
-                    <TableHead>
-                    <TableRow>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Promotion</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Nom de l'Étudiant</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Professeur</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Encadrant</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Entreprise</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Type</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Année</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>Compte Rendu</Typography></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {filteredStages.map((stage, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{stage.promotion}</TableCell>
-                                <TableCell>{stage.nomEtudiant}</TableCell>
-                                <TableCell>{stage.professeur}</TableCell>
-                                <TableCell>{stage.encadrant}</TableCell>
-                                <TableCell>{stage.entreprise}</TableCell>
-                                <TableCell>
-                                    {stage.type === "1A" && (
-                                        <Chip label="1A" color="primary" />
-                                    )}
-                                    {stage.type === "2A-1" && (
-                                        <Chip label="2A-1" color="secondary" />
-                                    )}
-                                    {stage.type === "2A-2" && (
-                                        <Chip label="2A-2" color="error" />
-                                    )}
-                                    {stage.type === "3A-1" && (
-                                        <Chip label="3A-1" color="success" />
-                                    )}
-                                    {stage.type === "3A-2" && (
-                                        <Chip label="3A-2" color="warning" />
-                                    )}
-                                </TableCell>
-                                <TableCell>{stage.annee}</TableCell>
-                                <TableCell>{stage.compteRendu}</TableCell>
-                                
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Box>
+<Box sx={{ overflow: 'auto', width: '100%' }}>        
+                      <Table
+                      aria-label="simple table"
+                      sx={{
+                          whiteSpace: "nowrap",
+                          mt: 2
+                      }}
+                  >
+                      <TableHead>
+                      <TableRow>
+                            
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Étudiant</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Professeur</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Encadrant</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Entreprise</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Type</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Année</Typography></TableCell>
+                              <TableCell><Typography variant="subtitle1" fontWeight={600}>Compte Rendu</Typography></TableCell>
+                          </TableRow>
+                      </TableHead>
+                      <TableBody>
+                          {filteredStages.map((stage, index) => (
+                              <TableRow key={index}>
+                                  <TableCell>{stage.nom_etudiant} {stage.prenom_etudiant}</TableCell>
+                                  <TableCell>{stage.nom_professeur} {stage.prenom_professeur}</TableCell>
+                                  <TableCell>{stage.nom_encadrant} {stage.prenom_encadrant}</TableCell>
+                                  <TableCell>{stage.nom_entreprise} </TableCell>
+                        
+                                  <TableCell>
+                                      {stage.no_type === 11 && (
+                                          <Chip label="11" color="primary" />
+                                      )}
+                                      {stage.no_type === 21 && (
+                                          <Chip label="21" color="secondary" />
+                                      )}
+                                      {stage.no_type === 22 && (
+                                          <Chip label="22" color="error" />
+                                      )}
+                                      {stage.no_type === 31 && (
+                                          <Chip label="31" color="success" />
+                                      )}
+                                      {stage.no_type === 32 && (
+                                          <Chip label="32" color="warning" />
+                                      )}
+                                  </TableCell>
+                                  <TableCell>{formatDate(stage.annee_de_stage)}</TableCell>
+                                  <TableCell>{stage.appreciation_stage}</TableCell>
+                                  
+                              </TableRow>
+                          ))}
+                      </TableBody>
+                  </Table>
+              </Box>
+
+
             <Dialog
                 open={confirmationDialogOpen}
                 onClose={() => handleConfirmation(false)}

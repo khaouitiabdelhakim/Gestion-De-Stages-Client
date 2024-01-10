@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 import { Stack, Typography, Box, FormControl, Select, MenuItem } from '@mui/material';
 import DashboardCard from '../../../components/shared/DashboardCard';
@@ -6,22 +7,25 @@ import DashboardCard from '../../../components/shared/DashboardCard';
 const MonthlyEarnings = () => {
   const theme = useTheme();
 
-  const [currentStage, setCurrentStage] = useState('1A');
+  const [currentStage, setCurrentStage] = useState('11');
 
-  const students = {
-    '1A': Math.floor(Math.random() * 50),
-    '2A-1': Math.floor(Math.random() * 50),
-    '2A-2': Math.floor(Math.random() * 50),
-    '3A-1': Math.floor(Math.random() * 50),
-    '3A-2': Math.floor(Math.random() * 50),
-  };
+  const [students,updateStudents] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:3500/stage/types')
+      .then(response => {
+        updateStudents(response.data)
+        console.log(response.data)
+      })
+      .catch(error => console.error('Error fetching notes', error));
+  }, []);
 
   const stageColors = {
-    '1A': '#FF6F61',
-    '2A-1': '#6B5B95',
-    '2A-2': '#88B04B',
-    '3A-1': '#F7CAC9',
-    '3A-2': '#92A8D1',
+    '11': '#FF6F61',
+    '12': '#6B5B95',
+    '22': '#88B04B',
+    '31': '#F7CAC9',
+    '32': '#92A8D1',
   };
 
   const handleStageChange = (event) => {
