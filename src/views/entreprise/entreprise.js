@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
   Typography, Box, IconButton, Table, TableBody, TableCell, TableHead, TableRow,
   Chip, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button
@@ -7,116 +8,25 @@ import DashboardCard from '../../components/shared/DashboardCard';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const entreprises = [
+
   
-    {
-      nom: "MarocTech",
-      formeJuridique: "SARL",
-      telephone: "0521123456",
-      adresse: "Rue Technologique, Casablanca",
-      ville: "Casablanca",
-      fax: "0521123457",
-      contact: "Ahmed Zouhir",
-      telephoneContact: "0654321098"
-    },
-    {
-      nom: "InnovMaroc",
-      formeJuridique: "SA",
-      telephone: "0532123456",
-      adresse: "Avenue de l'Innovation, Rabat",
-      ville: "Rabat",
-      fax: "0532123457",
-      contact: "Fatima Zara",
-      telephoneContact: "0665321098"
-    },
-    {
-      nom: "TechMaroc",
-      formeJuridique: "SARL",
-      telephone: "0523323456",
-      adresse: "Route Technologique, Tanger",
-      ville: "Tanger",
-      fax: "0523323457",
-      contact: "Youssef Rahimi",
-      telephoneContact: "0678321098"
-    },
-    {
-      nom: "InnoTechMaroc",
-      formeJuridique: "SA",
-      telephone: "0534323456",
-      adresse: "Boulevard de l'Innovation, Marrakech",
-      ville: "Marrakech",
-      fax: "0534323457",
-      contact: "Sara El Mansouri",
-      telephoneContact: "0654321898"
-    },
-    {
-      nom: "MarocInnov",
-      formeJuridique: "SARL",
-      telephone: "0525323456",
-      adresse: "Avenue de l'Innovation, Fès",
-      ville: "Fès",
-      fax: "0525323457",
-      contact: "Karim Ait Baha",
-      telephoneContact: "0612321098"
-    },
-    {
-      nom: "InnoMarocTech",
-      formeJuridique: "SA",
-      telephone: "0536323456",
-      adresse: "Route Technologique, Agadir",
-      ville: "Agadir",
-      fax: "0536323457",
-      contact: "Nadia El Ghazali",
-      telephoneContact: "0698321098"
-    },
-    {
-      nom: "MarocSoft",
-      formeJuridique: "SARL",
-      telephone: "0527323456",
-      adresse: "Avenue SoftTech, Témara",
-      ville: "Témara",
-      fax: "0527323457",
-      contact: "Ali Chaoui",
-      telephoneContact: "0678321098"
-    },
-    {
-      nom: "SoftMaroc",
-      formeJuridique: "SA",
-      telephone: "0537323456",
-      adresse: "Boulevard SoftTech, El Jadida",
-      ville: "El Jadida",
-      fax: "0537323457",
-      contact: "Saida El Kabbaj",
-      telephoneContact: "0618321098"
-    },
-    {
-      nom: "MarocInnoSoft",
-      formeJuridique: "SARL",
-      telephone: "0528323456",
-      adresse: "Rue de l'Innovation, Oujda",
-      ville: "Oujda",
-      fax: "0528323457",
-      contact: "Yassine El Hamdi",
-      telephoneContact: "0691321098"
-    },
-    {
-      nom: "SoftInnovMaroc",
-      formeJuridique: "SA",
-      telephone: "0538323456",
-      adresse: "Avenue de l'Innovation, Meknès",
-      ville: "Meknès",
-      fax: "0538323457",
-      contact: "Samira El Kadiri",
-      telephoneContact: "0619321098"
-    }
-  ];
+  
   
   
 
 
   const EntrepriseList = () => {
+
+
+    const [entreprises, change]  = useState([]) ;
+
+    useEffect(() => {
+      axios.get('http://localhost:3500/entreprise')
+        .then(response => change(response.data))
+        .catch(error => console.error('Error fetching notes', error));
+    }, []);
+
     const [searchText, setSearchText] = useState('');
-    const [entrepriseVilleFilter, setentrepriseVilleFilter] = useState('');
     const [selectedentrepriseIndex, setSelectedentrepriseIndex] = useState(null);
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
     const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -137,31 +47,73 @@ const entreprises = [
       setSelectedentreprise(null);
       setAddDialogOpen(true);
   };
-    const handleAddNewentreprise = (newentreprise) => {
-      // Ajouter la logique pour ajouter le nouveau entreprise à votre tableau de entreprises
-      // newentreprise contiendra les informations du nouveau entreprise provenant du formulaire
-      // setentreprises([...entreprises, newentreprise]);
-      setAddDialogOpen(false);
-  };
+    
 
-    const handleEditClick = (index) => {
-      setSelectedentreprise(entreprises[index]);
-      setSelectedentrepriseIndex(index);
-      setEditDialogOpen(true);
+ 
+
+const handleAddNewentreprise = async (newentreprise) => {
+  try {
+    // Create a new JSON object from the form data
+    const entrepriseData = {
+      nom_entreprise: newentreprise.nom,
+      forme_juridique: newentreprise.formeJuridique,
+      telephone_contact_entreprise: newentreprise.telephoneContact,
+      adresse_entreprise: newentreprise.adresse,
+      telephone_entreprise: newentreprise.telephone,
+      fax_entreprise: newentreprise.fax,
+      contact_entreprise: newentreprise.contact,
     };
-    const handleEditentreprise = (updatedentreprise) => {
-      const updatedentreprises = [...entreprises];
-      updatedentreprises[selectedentrepriseIndex] = updatedentreprise;
-      // Mettre à jour l'état des entreprises avec les informations modifiées
-      // setentreprises(updatedentreprises);
-    };
+
+    // Send a POST request to create a new enterprise
+    const response = await axios.post('http://localhost:3500/entreprise', entrepriseData);
+
+    // Assuming the server returns the created enterprise
+    const createdEnterprise = response.data;
+
+    // Update the state with the created enterprise
+    change([...entreprises, createdEnterprise]);
+
+    // Close the add dialog
+    setAddDialogOpen(false);
+  } catch (error) {
+    console.error('Error creating new enterprise', error);
+    // Handle error, show a message to the user, etc.
+  }
+};
+
+
+const handleEditClick = (index) => {
+  setSelectedentreprise(entreprises[index]);
+  setSelectedentrepriseIndex(index);
+  setEditDialogOpen(true);
+};
+
+const handleEditentreprise = async (updatedentreprise) => {
+  try {
+    console.log('Updated Enterprise Object:', updatedentreprise);
+    const updatedEnterpriseData = updatedentreprise
+
+    // Send a PUT request to update the enterprise on the server
+    await axios.put(`http://localhost:3500/entreprise/${updatedentreprise.no_entreprise}`, updatedEnterpriseData);
+
+    // Update the state with the modified enterprise
+    const updatedentreprises = [...entreprises];
+    updatedentreprises[selectedentrepriseIndex] = updatedentreprise;
+    change(updatedentreprises);
+
+    // Close the edit dialog
+    setEditDialogOpen(false);
+  } catch (error) {
+    console.error('Error updating enterprise', error);
+    // Handle error, show a message to the user, etc.
+  }
+};
+
+
 
   
 
-    const handleDeleteClick = (index) => {
-      setSelectedentrepriseIndex(index);
-      setConfirmationDialogOpen(true);
-  };
+  
   const handleConfirmation = (confirmed) => {
     if (confirmed && selectedentrepriseIndex !== null) {
         // Supprimer le entreprise du tableau ici
@@ -176,20 +128,16 @@ const entreprises = [
 };
     const filteredentreprises = entreprises.filter(entreprise => {
         const searchMatch = (
-            entreprise.nom.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.formeJuridique.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.telephone.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.adresse.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.ville.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.fax.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.contact.toLowerCase().includes(searchText.toLowerCase()) ||
-            entreprise.telephoneContact.toLowerCase().includes(searchText.toLowerCase())
+            entreprise.nom_entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.forme_juridique.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.telephone_entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.adresse_entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.fax_entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.contact_entreprise.toLowerCase().includes(searchText.toLowerCase()) ||
+            entreprise.telephone_contact_entreprise.toLowerCase().includes(searchText.toLowerCase())
         );
 
-        
-        const entrepriseVilleMatch = !entrepriseVilleFilter || entreprise.ville === entrepriseVilleFilter;
-
-        return searchMatch && entrepriseVilleMatch;
+        return searchMatch ;
     });
     
 
@@ -215,26 +163,7 @@ const entreprises = [
                 
                     
                
-                
-                <TextField
-                    select
-                    label="Ville"
-                    variant="outlined"
-                    value={entrepriseVilleFilter}
-                    onChange={(e) => setentrepriseVilleFilter(e.target.value)}
-                    sx={{ width: '20%'  , mr: 2}}
-                >
-                    <MenuItem key="Casablanca" value="Casablanca">Casablanca</MenuItem>
-                    <MenuItem key="Rabat" value="Rabat">Rabat</MenuItem>
-                    <MenuItem key="Fès" value="Fès">Fès</MenuItem>
-                    <MenuItem key="Marrakech" value="Marrakech">Marrakech</MenuItem>
-                    <MenuItem key="Tanger" value="Tanger">Tanger</MenuItem>
-                    <MenuItem key="Agadir" value="Agadir">Agadir</MenuItem>
-                    <MenuItem key="Meknès" value="Meknès">Meknès</MenuItem>
-                    <MenuItem key="Oujda" value="Oujda">Oujda</MenuItem>
-                    <MenuItem key="El Jadida" value="El Jadida">El Jadida</MenuItem>
-                    <MenuItem key="Témara" value="Témara">Témara</MenuItem>
-                </TextField>
+            
             </Box>
             </Box>
 
@@ -252,7 +181,6 @@ const entreprises = [
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>forme Juridique</Typography></TableCell>
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>telephone</Typography></TableCell>
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>adresse</Typography></TableCell>
-                            <TableCell><Typography variant="subtitle1" fontWeight={600}>ville</Typography></TableCell>
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>fax</Typography></TableCell>
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>contact</Typography></TableCell>
                             <TableCell><Typography variant="subtitle1" fontWeight={600}>telephone Contact</Typography></TableCell>
@@ -262,20 +190,16 @@ const entreprises = [
                     <TableBody>
                         {filteredentreprises.map((entreprise, index) => (
                             <TableRow key={index}>
-                                <TableCell>{entreprise.nom}</TableCell>
-                                <TableCell>{entreprise.formeJuridique}</TableCell>
-                                <TableCell>{entreprise.telephone}</TableCell>
-                                <TableCell>{entreprise.adresse}</TableCell>
-                                <TableCell>{entreprise.ville}</TableCell>
-                                <TableCell>{entreprise.fax}</TableCell>
-                                <TableCell>{entreprise.contact}</TableCell>
-                                <TableCell>{entreprise.telephoneContact}</TableCell>
+                                <TableCell>{entreprise.nom_entreprise}</TableCell>
+                                <TableCell>{entreprise.forme_juridique}</TableCell>
+                                <TableCell>{entreprise.telephone_entreprise}</TableCell>
+                                <TableCell>{entreprise.adresse_entreprise}</TableCell>
+                                <TableCell>{entreprise.fax_entreprise}</TableCell>
+                                <TableCell>{entreprise.contact_entreprise}</TableCell>
+                                <TableCell>{entreprise.telephone_contact_entreprise}</TableCell>
                                 <TableCell>
                                     <IconButton onClick={() => handleEditClick(index)}>
                                         <EditIcon style={{ color: 'green' }} />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleDeleteClick(index)}>
-                                        <DeleteIcon style={{ color: 'red' }} />
                                     </IconButton>
                                 </TableCell>
                             </TableRow>
@@ -296,91 +220,82 @@ const entreprises = [
                     <Button onClick={() => handleConfirmation(true)} style={{ color: 'red' }}>Supprimer</Button>
                 </DialogActions>
             </Dialog>
-            
-  <Dialog
-    open={editDialogOpen}
-    onClose={() => setEditDialogOpen(false)}
-  >
-    <DialogTitle>Modifier les informations de l'entreprise</DialogTitle>
-    <DialogContent>
-      <TextField
-        label="Nom"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.nom : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, nom: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Forme Juridique"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.formeJuridique : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, formeJuridique: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Téléphone"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.telephone : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, telephone: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Adresse"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.adresse : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, adresse: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Ville"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.ville : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, ville: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Fax"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.fax : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, fax: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Contact"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.contact : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, contact: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Téléphone de Contact"
-        variant="outlined"
-        value={selectedentreprise ? selectedentreprise.telephoneContact : ''}
-        onChange={(e) => setSelectedentreprise({ ...selectedentreprise, telephoneContact: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      {/* Ajoute d'autres champs si nécessaire */}
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={() => setEditDialogOpen(false)} color="primary">
-        Annuler
-      </Button>
-      <Button onClick={() => {
-        handleEditentreprise(selectedentreprise);
-        setEditDialogOpen(false);
-      }} color="primary">
-        Enregistrer
-      </Button>
-    </DialogActions>
-  </Dialog>
+            <Dialog
+  open={editDialogOpen}
+  onClose={() => setEditDialogOpen(false)}
+>
+  <DialogTitle>Modifier les informations de l'entreprise</DialogTitle>
+  <DialogContent>
+    <TextField
+      label="Nom"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.nom_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, nom_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Forme Juridique"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.forme_juridique : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, forme_juridique: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Téléphone"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.telephone_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, telephone_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Adresse"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.adresse_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, adresse_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Fax"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.fax_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, fax_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Contact"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.contact_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, contact_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    <TextField
+      label="Téléphone de Contact"
+      variant="outlined"
+      value={selectedentreprise ? selectedentreprise.telephone_contact_entreprise : ''}
+      onChange={(e) => setSelectedentreprise({ ...selectedentreprise, telephone_contact_entreprise: e.target.value })}
+      fullWidth
+      margin="normal"
+    />
+    {/* Add other fields if necessary */}
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setEditDialogOpen(false)} color="primary">
+      Annuler
+    </Button>
+    <Button onClick={() => {
+      handleEditentreprise(selectedentreprise);
+      setEditDialogOpen(false);
+    }} color="primary">
+      Enregistrer
+    </Button>
+  </DialogActions>
+</Dialog>
 
 
   <Dialog
@@ -418,14 +333,6 @@ const entreprises = [
         variant="outlined"
         value={newentreprise.adresse}
         onChange={(e) => setNewentreprise({ ...newentreprise, adresse: e.target.value })}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Ville"
-        variant="outlined"
-        value={newentreprise.ville}
-        onChange={(e) => setNewentreprise({ ...newentreprise, ville: e.target.value })}
         fullWidth
         margin="normal"
       />
