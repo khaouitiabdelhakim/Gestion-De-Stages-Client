@@ -1,5 +1,5 @@
 import {
-  IconBuildingSkyscraper , IconBriefcase , IconUserCheck , IconSchool ,IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconUser,
+  IconBuildingSkyscraper , IconUserCircle, IconBriefcase , IconUserCheck , IconSchool ,IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconUser,
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -57,13 +57,13 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Externe',
+    subheader: 'Administrateur',
   },
   {
     id: uniqueId(),
     title: 'Profile',
-    icon: IconUserCheck,
-    href: '/sample-page',
+    icon: IconUserCircle,
+    href: '/profile',
   },
 
   /*
