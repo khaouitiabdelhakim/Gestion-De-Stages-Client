@@ -1,82 +1,62 @@
-import React from 'react';
-import Chart from 'react-apexcharts';
+import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Stack, Typography, Avatar, Fab } from '@mui/material';
-import { IconArrowDownRight, IconCurrencyDollar } from '@tabler/icons';
+import { Stack, Typography, Box, FormControl, Select, MenuItem } from '@mui/material';
 import DashboardCard from '../../../components/shared/DashboardCard';
 
 const MonthlyEarnings = () => {
-  // chart color
   const theme = useTheme();
-  const secondary = theme.palette.secondary.main;
-  const secondarylight = '#f5fcff';
-  const errorlight = '#fdede8';
 
-  // chart
-  const optionscolumnchart = {
-    chart: {
-      type: 'area',
-      fontFamily: "'Plus Jakarta Sans', sans-serif;",
-      foreColor: '#adb0bb',
-      toolbar: {
-        show: false,
-      },
-      height: 60,
-      sparkline: {
-        enabled: true,
-      },
-      group: 'sparklines',
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 2,
-    },
-    fill: {
-      colors: [secondarylight],
-      type: 'solid',
-      opacity: 0.05,
-    },
-    markers: {
-      size: 0,
-    },
-    tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-    },
+  const [currentStage, setCurrentStage] = useState('1A');
+
+  const students = {
+    '1A': Math.floor(Math.random() * 50),
+    '2A-1': Math.floor(Math.random() * 50),
+    '2A-2': Math.floor(Math.random() * 50),
+    '3A-1': Math.floor(Math.random() * 50),
+    '3A-2': Math.floor(Math.random() * 50),
   };
-  const seriescolumnchart = [
-    {
-      name: '',
-      color: secondary,
-      data: [25, 66, 20, 40, 12, 58, 20],
-    },
-  ];
+
+  const stageColors = {
+    '1A': '#FF6F61',
+    '2A-1': '#6B5B95',
+    '2A-2': '#88B04B',
+    '3A-1': '#F7CAC9',
+    '3A-2': '#92A8D1',
+  };
+
+  const handleStageChange = (event) => {
+    setCurrentStage(event.target.value);
+  };
 
   return (
-    <DashboardCard
-      title="Monthly anass "
-      action={
-        <Fab color="secondary" size="medium" sx={{color: '#ffffff'}}>
-          <IconCurrencyDollar width={24} />
-        </Fab>
-      }
-      footer={
-        <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="60px" />
-      }
-    >
+    <DashboardCard title={`Stage de Type ${currentStage}`}>
       <>
-        <Typography variant="h3" fontWeight="700" mt="-20px">
-          $6,820
-        </Typography>
-        <Stack direction="row" spacing={1} my={1} alignItems="center">
-          <Avatar sx={{ bgcolor: errorlight, width: 27, height: 27 }}>
-            <IconArrowDownRight width={20} color="#FA896B" />
-          </Avatar>
-          <Typography variant="subtitle2" fontWeight="600">
-            +9%
-          </Typography>
-          <Typography variant="subtitle2" color="textSecondary">
-            last year
-          </Typography>
+        <Stack spacing={2} alignItems="center">
+          {/* Liste déroulante pour choisir le type de stage */}
+          <FormControl style={{ width: '80%' }}>
+            <Select value={currentStage} onChange={handleStageChange}>
+              {Object.keys(students).map((stage) => (
+                <MenuItem key={stage} value={stage}>
+                  {stage}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Affichage de la bulle pour le type de stage sélectionné */}
+          <Box
+            border={1}
+            borderColor={stageColors[currentStage]}
+            borderRadius={4}
+            p={2}
+            bgcolor={stageColors[currentStage]}
+            width="80%"
+            textAlign="center"
+          >
+            <Typography variant="subtitle2" fontWeight="600" color="white">
+              {students[currentStage]} Etudiants
+            </Typography>
+          </Box>
         </Stack>
       </>
     </DashboardCard>

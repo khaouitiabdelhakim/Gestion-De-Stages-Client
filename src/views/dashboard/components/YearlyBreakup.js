@@ -59,44 +59,33 @@ const YearlyBreakup = () => {
       },
     ],
   };
-  const seriescolumnchart = [38, 40, 25];
+
+  const currentYear = new Date().getFullYear(); // Get the current year
+
+  // Mock percentage for the current year (replace this with your actual percentage calculation)
+  const percentageCurrentYear = 85; // Change this to your actual calculated percentage
+
+  const seriescolumnchart = [percentageCurrentYear, 100 - percentageCurrentYear];
 
   return (
-    <DashboardCard title="Yearly Breakup">
+    <DashboardCard title={`Pourcentage d'étudiants ayant terminé leur stage 2023`}>
       <Grid container spacing={3}>
         {/* column */}
         <Grid item xs={7} sm={7}>
           <Typography variant="h3" fontWeight="700">
-            $36,358
+            {percentageCurrentYear}%
           </Typography>
-          <Stack direction="row" spacing={1} mt={1} alignItems="center">
-            <Avatar sx={{ bgcolor: successlight, width: 27, height: 27 }}>
-              <IconArrowUpLeft width={20} color="#39B69A" />
-            </Avatar>
-            <Typography variant="subtitle2" fontWeight="600">
-              +9%
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary">
-              last year
-            </Typography>
-          </Stack>
+         
           <Stack spacing={3} mt={5} direction="row">
             <Stack direction="row" spacing={1} alignItems="center">
               <Avatar
                 sx={{ width: 9, height: 9, bgcolor: primary, svg: { display: 'none' } }}
               ></Avatar>
               <Typography variant="subtitle2" color="textSecondary">
-                2022
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Avatar
-                sx={{ width: 9, height: 9, bgcolor: primarylight, svg: { display: 'none' } }}
-              ></Avatar>
-              <Typography variant="subtitle2" color="textSecondary">
                 2023
               </Typography>
             </Stack>
+            
           </Stack>
         </Grid>
         {/* column */}

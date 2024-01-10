@@ -65,7 +65,7 @@ const SalesOverview = () => {
             tickAmount: 4,
         },
         xaxis: {
-            categories: ['Entreprise 1', 'Entreprise 2', 'Entreprise 3', 'Entreprise 4', 'Entreprise 5'], // Noms des entreprises marocaines
+            categories: ['Atos', 'Capgemini', 'Cnexia tech', 'DXC Technology ', 'IBM'], // Noms des entreprises marocaines
             axisBorder: {
                 show: false,
             },
@@ -79,12 +79,12 @@ const SalesOverview = () => {
     const seriescolumnchart = [
         {
             name: 'Nombre d\'étudiants',
-            data: [45, 60, 30, 75, 50], // Exemple de nombres aléatoires pour les étudiants par entreprise
+            data: [45, 60, 30, 75, 25], // Exemple de nombres aléatoires pour les étudiants par entreprise
         }
     ];
 
     return (
-        <DashboardCard title="Sales Overview" action={
+        <DashboardCard title="Nombre des étudiant par entreprise " action={
             <Select
                 labelId="month-dd"
                 id="month-dd"

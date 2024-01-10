@@ -57,13 +57,13 @@ const Menuitems = [
   },
   {
     navlabel: true,
-    subheader: 'Administrateur',
+    subheader: 'Externe',
   },
   {
     id: uniqueId(),
     title: 'Profile',
-    icon: IconUserCircle,
-    href: '/profile',
+    icon: IconUserCheck,
+    href: '/sample-page',
   },
 
   /*
