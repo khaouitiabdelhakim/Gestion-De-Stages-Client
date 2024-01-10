@@ -16,36 +16,61 @@ function AddEtudiant(){
     const [adresse, setAdresse] = useState("");
     const [telephone, setTelephone] = useState("");
     const [email, setEmail] = useState("");
-    const [anneePromotion, setAnneePromotion] = useState(2023);
+    const [anneePromotion, setAnneePromotion] = useState("2023");
     const [mention, setMention] = useState("assezBien");
 
     const ajouterEtudiant = () => {
-        // API : fetch('/api/ajouterEtudiant', { method: 'POST', body: { nom, prenom, ... } })
-        console.log("Données à ajouter :", {
-        nom_etudiant : nom,
-        prenom_etudiant : prenom,
-        date_naissance_etudiant : dateNaissance,
-        sexe_etudiant : sexe,
-        adresse_etudiant : adresse,
-        telephone_etudiant : telephone,
-        email_etudiant : email,
-        annee_promotion : anneePromotion,
-        mention_etudiant : mention,
-        }); 
+        const etudiantData = {
+            nom_etudiant: nom,
+            prenom_etudiant: prenom,
+            date_naissance_etudiant: dateNaissance || null,
+            sexe_etudiant: sexe || true,
+            mention_etudiant: mention,
+            annee_promotion: anneePromotion || "2023",
+            email_etudiant: email,
+            telephone_etudiant: telephone,
+            adresse_etudiant: adresse,
+        };
 
-        // Réinitialiser les champs après l'ajout
-        setNom("");
-        setPrenom("");
-        setDateNaissance("");
-        setSexe("");
-        setAdresse("");
-        setTelephone("");
-        setEmail("");
-        setAnneePromotion("");
-        setMention("");
-
-        handleClose();
+        Object.keys(etudiantData).forEach(key => {
+            try {
+              console.log(key, etudiantData[key]);
+            } catch (error) {
+              console.error(`Error logging ${key}:`, error);
+            }
+          });
+          
+    
+        fetch('http://localhost:3500/etudiant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(etudiantData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response from backend:', data);
+    
+            setNom("");
+            setPrenom("");
+            setDateNaissance("");
+            setSexe(true);
+            setAnneePromotion("2023");
+            setMention("Très Bien");
+            setEmail("");
+            setTelephone("");
+            setAdresse("");
+            handleClose();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
+      
+      
+    
+    
     //Add function
     return(
         <>
@@ -145,8 +170,17 @@ function AddEtudiant(){
                         <Typography variant="subtitle8"
                             fontWeight={600} component="label" htmlFor='anneePromotion' mb="5px">Promotion
                         </Typography>
-                        <CustomTextField id="anneePromotion" type="number" variant="outlined" fullWidth placeholder="Année de promotion" defaultValue={anneePromotion} onChange={(value) => setAnneePromotion(value)} allowMouseWheel />
-                    </Box>
+                        <CustomTextField
+                            id="anneePromotion"
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Année de promotion"
+                            defaultValue={anneePromotion}
+                            onChange={(e) => setAnneePromotion(e.target.value)} // Corrected onChange
+                            allowMouseWheel
+                            />
+                            </Box>
 
                     <Box mt="25px">
                         <Typography variant="subtitle9"
@@ -158,7 +192,6 @@ function AddEtudiant(){
                             value={mention}
                             onChange={(e) => setMention(e.target.value)}
                             >
-                            <option value="">Choisir la Mention</option>
                             <option value="Assez-Bien">Assez-Bien</option>
                             <option value="Bien">Bien</option>
                             <option value="Très Bien">Très Bien</option>

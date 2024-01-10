@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     Typography, Box,
     Table,
@@ -13,20 +14,6 @@ import DashboardCard from 'src/components/shared/DashboardCard';
 import UpdateProfesseur from './UpdateProfesseur';
 import AddProfesseur from './AddProfesseur';
 
-const professeurs   = [
-    {
-        "id": 1,
-        "nom_professeur": "Doe",
-        "prenom_professeur": "John",
-        "date_naissance_professeur": "12.Jan.1980",
-        "sexe_professeur": "Masculin",
-        "date_embauche_professeur": "01.Jan.2020",
-        "date_depart_professeur": "30.Dec.2025",
-        "email_professeur": "john.doe@example.com",
-        "telephone_professeur": "06 12 34 56 78",
-        "adresse_professeur": "123 Rue de la République",
-    },
-];
 
 const getFilteredItems = (query, professeurs) => {
     if(!query){
@@ -41,9 +28,24 @@ const getFilteredItems = (query, professeurs) => {
 const AllProfesseurs  = () => {
 
     
+    const [professeurs, change]  = useState([]) ;
     const [query, setQuery] = useState("");
     
     const filteredItems = getFilteredItems(query,professeurs );
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      };
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/professeur')
+          .then(response => {
+            change(response.data)
+            console.log(response.data)
+          })
+          .catch(error => console.error('Error fetching notes', error));
+      }, []);
 
     // const [professeurs , setProfesseurs  = useState([]);
 
@@ -169,7 +171,7 @@ const AllProfesseurs  = () => {
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="subtitle2" fontWeight={400}>
-                                            {professeur.date_naissance_professeur}
+                                            {formatDate(professeur.date_naissance_professeur)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -177,20 +179,20 @@ const AllProfesseurs  = () => {
                                             sx={{
                                                 px: "4px",
                                                 color: "#fff",
-                                                backgroundColor: professeur.sexe_professeur === 'Masculin' ? '#8EACFF' : '#FFACD9',
+                                                backgroundColor: professeur.sexe_professeur === true ? '#8EACFF' : '#FFACD9',
                                             }}
                                             size="small"
-                                            label={professeur.sexe_professeur}
+                                            label={professeur.sexe_professeur === true? 'Masculin' : 'Féminin'}
                                         />
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="subtitle2" fontWeight={400}>
-                                            {professeur.date_embauche_professeur}
+                                            {formatDate(professeur.date_emauche_professeur)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
                                         <Typography variant="subtitle2" fontWeight={400}>
-                                            {professeur.date_depart_professeur}
+                                            {formatDate(professeur.date_depart_professeur)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>

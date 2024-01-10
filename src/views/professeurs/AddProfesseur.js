@@ -23,31 +23,46 @@ function AddProfesseur(){
     const [adresse, setAdresse] = useState("");
 
     const ajouterProfesseur = () => {
-        // API : fetch('/api/ajouterEtudiant', { method: 'POST', body: { nom, prenom, ... } })
-        console.log("Données à ajouter :", {
+        const professeurData = {
             nom_professeur: nom,
             prenom_professeur: prenom,
-            date_naissance_professeur: dateNaissance,
+            date_naissance_professeur: dateNaissance || null,
             sexe_professeur: sexe,
-            date_embauche_professeur: dateEmbauche,
-            date_depart_professeur: dateDepart,
+            date_embauche_professeur: dateEmbauche || null,
+            date_depart_professeur: dateDepart || null,
             email_professeur: email,
             telephone_professeur: telephone,
             adresse_professeur: adresse,
-        }); 
-
-        // Réinitialiser les champs après l'ajout
-        setNom("");
-        setPrenom("");
-        setDateNaissance("");
-        setSexe(true);
-        setDateEmbauche("");
-        setDateDepart("");
-        setEmail("");
-        setTelephone("");
-        setAdresse("");
-        handleClose();
+        };
+    
+        fetch('http://localhost:3500/professeur', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(professeurData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response from backend:', data);
+    
+            setNom("");
+            setPrenom("");
+            setDateNaissance("");
+            setSexe(true);
+            setDateEmbauche("");
+            setDateDepart("");
+            setEmail("");
+            setTelephone("");
+            setAdresse("");
+            handleClose();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     };
+    
+    
 
     //Add function
     return(

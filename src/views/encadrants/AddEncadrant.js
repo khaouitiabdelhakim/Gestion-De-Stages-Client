@@ -21,23 +21,41 @@ function AddEncadrants(){
     const [emailEncadrant, setEmailEncadrant] = useState('');
     const [telephoneEncadrant, setTelephoneEncadrant] = useState('');
 
-    const ajouterEncadrant  = () => {
-        // API : fetch('/api/ajouterEtudiant', { method: 'POST', body: { nom, prenom, ... } })
-        console.log("Données à ajouter :", {
+    const ajouterEncadrant = () => {
+        // Create an object with the encadrant data
+        const encadrantData = {
             nom_encadrant: nomEncadrant,
             prenom_encadrant: prenomEncadrant,
             email_encadrant: emailEncadrant,
             telephone_encadrant: telephoneEncadrant,
-        }); 
-
-        // Réinitialiser les champs après l'ajout
-        setNomEncadrant('');
-        setPrenomEncadrant('');
-        setEmailEncadrant('');
-        setTelephoneEncadrant('');
-
-        handleClose();
+        };
+    
+        // Make an HTTP POST request to the backend API
+        fetch('http://localhost:3500/encadrant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(encadrantData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the backend (if needed)
+            console.log('Response from backend:', data);
+    
+            // Reset form fields and close the modal
+            setNomEncadrant('');
+            setPrenomEncadrant('');
+            setEmailEncadrant('');
+            setTelephoneEncadrant('');
+            handleClose();
+        })
+        .catch(error => {
+            // Handle errors if any
+            console.error('Error:', error);
+        });
     };
+    
     //Add function
     return(
         <>

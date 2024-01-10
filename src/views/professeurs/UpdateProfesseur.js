@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { Modal, Button } from 'react-bootstrap';
 import { Box, Typography } from "@mui/material";
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
+import axios from "axios";
 
 
 const UpdateProfesseur  = ({professeur  }) => {
@@ -22,22 +23,30 @@ const UpdateProfesseur  = ({professeur  }) => {
     const [adresse, setAdresse] = useState(professeur ? professeur.adresse_professeur : "");      
         
     
-    const ModifierProfesseur  = () => {
-          // Mettez à jour l'étudiant via une API
-          console.log("Données mises à jour :", {
-            id: professeur.id,
-            nom_professeur: nom,
-            prenom_professeur: prenom,
-            date_naissance_professeur: dateNaissance,
-            sexe_professeur: sexe,
-            date_embauche_professeur: dateEmbauche,
-            date_depart_professeur: dateDepart,
-            email_professeur: email,
-            telephone_professeur: telephone,
-            adresse_professeur: adresse,
-          });
+    
+  const ModifierProfesseur = async () => {
+    try {
+      // Prepare the data for the PUT request
+      const updatedProfesseurData = {
+        nom_professeur: nom,
+        prenom_professeur: prenom,
+        date_naissance_professeur: dateNaissance,
+        sexe_professeur: sexe,
+        date_emauche_professeur: dateEmbauche,
+        date_depart_professeur: dateDepart,
+        email_professeur: email,
+        telephone_professeur: telephone,
+        adresse_professeur: adresse,
+      };
 
-        // Réinitialisez les champs après la mise à jour
+      // Log the updated data
+      console.log('Données mises à jour :', updatedProfesseurData);
+
+      // Send a PUT request to update the professeur data
+      const putResponse = await axios.put(`http://localhost:3500/professeur/${professeur.no_professeur}`, updatedProfesseurData);
+
+      if (putResponse.status === 200) {
+        // Reset the state variables after the update
         setNom("");
         setPrenom("");
         setDateNaissance("");
@@ -49,7 +58,13 @@ const UpdateProfesseur  = ({professeur  }) => {
         setAdresse("");
 
         handleClose();
-    };
+      } else {
+        console.error('Erreur lors de la mise à jour :', putResponse.statusText);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour :', error.message);
+    }
+  };
 
     useEffect(() => {
         // Mettez à jour les champs lorsque l'étudiant change

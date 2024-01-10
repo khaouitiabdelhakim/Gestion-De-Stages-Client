@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { Modal, Button } from 'react-bootstrap';
 import { Box, Typography } from "@mui/material";
+import axios from 'axios';
   
 import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
 
@@ -10,6 +11,22 @@ const UpdateEtudiant = ({etudiant}) => {
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
+
+    const convertToISOString = (formattedDateString) => {
+        // Parse the formatted date string
+        const parsedDate = new Date(formattedDateString);
+      
+        // Check if the parsing was successful
+        if (!isNaN(parsedDate.getTime())) {
+          // Convert the parsed date to ISO string format
+          return parsedDate.toISOString();
+        } else {
+          // Handle invalid date strings (returning null in this case)
+          console.error(`Invalid date string: ${formattedDateString}`);
+          return null;
+        }
+      };
+      
 
         const [nom, setNom] = useState(etudiant ? etudiant.nom : "");
         const [prenom, setPrenom] = useState(etudiant ? etudiant.prenom : "");
@@ -21,34 +38,53 @@ const UpdateEtudiant = ({etudiant}) => {
         const [anneePromotion, setAnneePromotion] = useState(etudiant ? etudiant.anneePromotion : "");
         const [mention, setMention] = useState(etudiant ? etudiant.mention : "");
       
-        const ModifierEtudiant = () => {
-          // Mettez à jour l'étudiant via une API
-          console.log("Données mises à jour :", {
-            id: etudiant.id,
-            nom_etudiant: nom,
-            prenom_etudiant: prenom,
-            date_naissance_etudiant: dateNaissance,
-            sexe_etudiant: sexe,
-            adresse_etudiant: adresse,
-            telephone_etudiant: telephone,
-            email_etudiant: email,
-            annee_promotion: anneePromotion,
-            mention_etudiant: mention,
-          });
+        
 
-        // Réinitialisez les champs après la mise à jour
-        setNom("");
-        setPrenom("");
-        setDateNaissance("");
-        setSexe();
-        setAdresse("");
-        setTelephone("");
-        setEmail("");
-        setAnneePromotion("");
-        setMention("");
+const ModifierEtudiant = async () => {
+  const apiEndpoint = 'http://localhost:3500'; // Replace with your actual API endpoint
+  const etudiantId = etudiant.no_etudiant;
 
-        handleClose();
+  try {
+    // Prepare the data for the PUT request
+    const updatedStudentData = {
+      nom_etudiant: nom,
+      prenom_etudiant: prenom,
+      date_naissance_etudiant: dateNaissance,
+      sexe_etudiant: sexe,
+      adresse_etudiant: adresse,
+      telephone_etudiant: telephone,
+      email_etudiant: email,
+      annee_promotion: anneePromotion,
+      mention_etudiant: mention,
     };
+
+    // Log the updated data
+    console.log('Données mises à jour :', updatedStudentData);
+
+    // Send a PUT request to update the student data
+    const putResponse = await axios.put(`${apiEndpoint}/etudiant/${etudiantId}`, updatedStudentData);
+
+    if (putResponse.status === 200) {
+      // Reset the state variables after the update
+      setNom("");
+      setPrenom("");
+      setDateNaissance("");
+      setSexe("");
+      setAdresse("");
+      setTelephone("");
+      setEmail("");
+      setAnneePromotion("");
+      setMention("");
+
+      handleClose();
+    } else {
+      console.error('Erreur lors de la mise à jour :', putResponse.statusText);
+    }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour :', error.message);
+  }
+};
+
 
     useEffect(() => {
         // Mettez à jour les champs lorsque l'étudiant change

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import {
     Typography, Box,
     Table,
@@ -13,128 +14,6 @@ import DashboardCard from 'src/components/shared/DashboardCard';
 import AddEtudiant from './AddEtudiant';
 import UpdateEtudiant from './UpdateEtudiant';
 
-const etudiants = [
-    {
-        "id": 1,
-        "nom_etudiant": "Marketplace",
-        "prenom_etudiant": "John",
-        "date_naissance_etudiant": "12.Jan.2021",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "123 Rue de la République",
-        "telephone_etudiant": "+33 6 12 34 56 78",
-        "email_etudiant": "john@example.com",
-        "annee_promotion": "2023",
-        "mention_etudiant": "Bien"
-      },
-      {
-        "id": 2,
-        "nom_etudiant": "Amazon",
-        "prenom_etudiant": "Alice",
-        "date_naissance_etudiant": "10.Jan.2021",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "456 Avenue des Étoiles",
-        "telephone_etudiant": "+1 555-1234",
-        "email_etudiant": "alice@example.com",
-        "annee_promotion": "2022",
-        "mention_etudiant": "Très bien"
-      },
-      {
-        "id": 3,
-        "nom_etudiant": "Google",
-        "prenom_etudiant": "Olivia",
-        "date_naissance_etudiant": "15.Feb.2020",
-        "sexe_etudiant": "Féminin",
-        "adresse_etudiant": "789 Boulevard Technologique",
-        "telephone_etudiant": "+44 20 7123 4567",
-        "email_etudiant": "olivia@example.com",
-        "annee_promotion": "2024",
-        "mention_etudiant": "Excellent"
-      },
-      {
-        "id": 4,
-        "nom_etudiant": "Microsoft",
-        "prenom_etudiant": "Emma",
-        "date_naissance_etudiant": "25.Mar.2019",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "101 Microsoft Way",
-        "telephone_etudiant": "+1 425-882-8080",
-        "email_etudiant": "emma@example.com",
-        "annee_promotion": "2021",
-        "mention_etudiant": "Bien"
-      },
-      {
-        "id": 5,
-        "nom_etudiant": "Apple",
-        "prenom_etudiant": "Liam",
-        "date_naissance_etudiant": "05.Apr.2018",
-        "sexe_etudiant": "Féminin",
-        "adresse_etudiant": "One Apple Park Way",
-        "telephone_etudiant": "+1 408-996-1010",
-        "email_etudiant": "liam@example.com",
-        "annee_promotion": "2020",
-        "mention_etudiant": "Très bien"
-      },
-      {
-        "id": 6,
-        "nom_etudiant": "Samsung",
-        "prenom_etudiant": "Noah",
-        "date_naissance_etudiant": "20.May.2017",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "234 Galaxy Street",
-        "telephone_etudiant": "+82 2-2255-0114",
-        "email_etudiant": "noah@example.com",
-        "annee_promotion": "2019",
-        "mention_etudiant": "Bien"
-      },
-      {
-        "id": 7,
-        "nom_etudiant": "Sony",
-        "prenom_etudiant": "Oliver",
-        "date_naissance_etudiant": "15.Jun.2016",
-        "sexe_etudiant": "Féminin",
-        "adresse_etudiant": "567 Sony Plaza",
-        "telephone_etudiant": "+81 3-6748-2111",
-        "email_etudiant": "oliver@example.com",
-        "annee_promotion": "2018",
-        "mention_etudiant": "Excellent"
-      },
-      {
-        "id": 8,
-        "nom_etudiant": "Tesla",
-        "prenom_etudiant": "Emma",
-        "date_naissance_etudiant": "10.Jul.2015",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "123 Electric Avenue",
-        "telephone_etudiant": "+1 650-681-5000",
-        "email_etudiant": "emma@example.com",
-        "annee_promotion": "2017",
-        "mention_etudiant": "Très bien"
-      },
-      {
-        "id": 9,
-        "nom_etudiant": "Facebook",
-        "prenom_etudiant": "Sophia",
-        "date_naissance_etudiant": "25.Aug.2014",
-        "sexe_etudiant": "Féminin",
-        "adresse_etudiant": "456 Social Street",
-        "telephone_etudiant": "+1 650-543-4800",
-        "email_etudiant": "sophia@example.com",
-        "annee_promotion": "2016",
-        "mention_etudiant": "Bien"
-      },
-      {
-        "id": 10,
-        "nom_etudiant": "Twitter",
-        "prenom_etudiant": "Jackson",
-        "date_naissance_etudiant": "05.Sep.2013",
-        "sexe_etudiant": "Masculin",
-        "adresse_etudiant": "789 Tweet Lane",
-        "telephone_etudiant": "+1 415-222-9670",
-        "email_etudiant": "jackson@example.com",
-        "annee_promotion": "2015",
-        "mention_etudiant": "Excellent"
-      }
-];
 
 const getFilteredItems = (query, etudiants) => {
     if(!query){
@@ -146,7 +25,28 @@ const getFilteredItems = (query, etudiants) => {
  
 const Etudiants = () => {
 
-    const [query, setQuery] = useState("");    
+    const [query, setQuery] = useState(""); 
+    
+    const [etudiants, setEtudiants] = useState([]);
+
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3500/etudiant');
+                setEtudiants(response.data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
+
     const filteredItems = getFilteredItems(query,etudiants);
 
     // const [etudiants, setEtudiants] = useState([]);
@@ -275,7 +175,7 @@ const Etudiants = () => {
                                     </TableCell>
                                     <TableCell>
                                         <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                            {etudiant.date_naissance_etudiant}
+                                            {formatDate(etudiant.date_naissance_etudiant)}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -283,10 +183,10 @@ const Etudiants = () => {
                                             sx={{
                                                 px: "4px",
                                                 color: "#fff",
-                                                backgroundColor: etudiant.sexe_etudiant === 'Masculin' ? '#8EACFF' : '#FFACD9;',
+                                                backgroundColor: etudiant.sexe_etudiant === true ? '#8EACFF' : '#FFACD9',
                                             }}
                                             size="small"
-                                            label={etudiant.sexe_etudiant}
+                                            label={etudiant.sexe_etudiant === true ? 'Masculin' : 'Féminin'}
                                         ></Chip>
                                         {/* <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
                                             {etudiant.sexe_etudiant}
