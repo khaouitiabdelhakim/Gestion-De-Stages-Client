@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 import { IconListCheck, IconMail, IconUser } from '@tabler/icons';
-
+import { Link as RouterLink } from 'react-router-dom';
 import ProfileImg from 'src/assets/images/profile/user-1.jpg';
 
 const Profile = () => {
@@ -66,7 +66,7 @@ const Profile = () => {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem component={RouterLink} to="/profile">
           <ListItemIcon>
             <IconUser width={20} />
           </ListItemIcon>

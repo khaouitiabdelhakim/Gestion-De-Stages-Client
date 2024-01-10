@@ -62,8 +62,8 @@ const Menuitems = [
   {
     id: uniqueId(),
     title: 'Profile',
-    icon: IconUserCheck,
-    href: '/sample-page',
+    icon: IconUserCircle,
+    href: '/profile',
   },
 
   /*
