@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fade, Grid, Modal, TextField } from '@mui/material';
 import PageContainer from 'src/components/container/PageContainer';
 import DashboardCard from '../../components/shared/DashboardCard';
@@ -22,14 +23,17 @@ import AdminForm from './AdminForm';
 
 const SamplePage = () => {
   // Données de l'administrateur (à remplacer par les vraies données)
-  const Data = {
-    "nom_admin": 'Mehdi',
-    "prenom_admin": 'Elargoubi',
-    "email_admin": 'admin@example.com',
-    "telephone_admin": '1234567890',
-    "login_admin": 'admin',
-    "password_admin": '********' ,
-  };
+  
+   
+  const [Data, changeUser]  = useState({}) ;
+
+    useEffect(() => {
+        axios.get('http://localhost:3500/user')
+          .then(response => { changeUser(response.data)
+            console.log('user',response.data) })
+          .catch(error => console.error('Error fetching user', error));
+          
+      }, []);
 
   const [adminData, setAdminData] = useState(Data);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
@@ -37,7 +41,7 @@ const SamplePage = () => {
 
   const handleUpdateAdmin = () => {
     setEditDialogOpen(true);
-    setSelectedAdmin(adminData);
+    setSelectedAdmin(Data);
   };
 
   const handleEditAdmin = (updatedAdmin) => {
@@ -83,7 +87,7 @@ const SamplePage = () => {
                     <TimelineDot color="primary" variant="outlined" />
                     <TimelineConnector />
                   </TimelineSeparator>
-                  <TimelineContent fontWeight="600"> {Data.nom_admin} </TimelineContent>
+                  <TimelineContent fontWeight="600"> {Data.nom} </TimelineContent>
                 </TimelineItem>
                 <TimelineItem>
                   <TimelineOppositeContent fontWeight="500">Prénom</TimelineOppositeContent>
@@ -92,7 +96,7 @@ const SamplePage = () => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    <Typography fontWeight="600"> {Data.prenom_admin} </Typography>{' '}
+                    <Typography fontWeight="600"> {Data.prenom} </Typography>{' '}
                   </TimelineContent>
                 </TimelineItem>
                 <TimelineItem>
@@ -101,7 +105,7 @@ const SamplePage = () => {
                     <TimelineDot color="success" variant="outlined" />
                     <TimelineConnector />
                   </TimelineSeparator>
-                  <TimelineContent> {Data.email_admin} </TimelineContent>
+                  <TimelineContent> {Data.email} </TimelineContent>
                 </TimelineItem>
                 <TimelineItem>
                   <TimelineOppositeContent fontWeight="500">Téléphone</TimelineOppositeContent>
@@ -110,7 +114,7 @@ const SamplePage = () => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    <Typography> {Data.telephone_admin} </Typography>{' '}
+                    <Typography> {Data.telephone} </Typography>{' '}
                   </TimelineContent>
                 </TimelineItem>
                 <TimelineItem>
@@ -120,7 +124,7 @@ const SamplePage = () => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    <Typography fontWeight="600"> {Data.login_admin} </Typography>
+                    <Typography fontWeight="600"> {Data.username} </Typography>
                   </TimelineContent>
                 </TimelineItem>
                 <TimelineItem>
@@ -128,7 +132,7 @@ const SamplePage = () => {
                   <TimelineSeparator>
                     <TimelineDot color="error" variant="outlined" />
                   </TimelineSeparator >
-                  <TimelineContent fontWeight="600"> {Data.password_admin} </TimelineContent>
+                  <TimelineContent fontWeight="600">.........</TimelineContent>
                 </TimelineItem>
               </Timeline>
             </CardContent>
@@ -154,40 +158,40 @@ const SamplePage = () => {
           <TextField
             label="Nom"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.nom_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, nom_admin: e.target.value })}
+            value={selectedAdmin ? selectedAdmin.nom : ''}
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, nom: e.target.value })}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Prénom"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.prenom_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, prenom_admin: e.target.value })}
+            value={selectedAdmin ? selectedAdmin.prenom : ''}
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, prenom: e.target.value })}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Téléphone"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.telephone_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, telephone_admin: e.target.value })}
+            value={selectedAdmin ? selectedAdmin.telephone: ''}
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, telephone: e.target.value })}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Email"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.email_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, email_admin: e.target.value })}
+            value={selectedAdmin ? selectedAdmin.email : ''}
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, email: e.target.value })}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Login"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.login_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, login_admin: e.target.value })}
+            value={selectedAdmin ? selectedAdmin.username : ''}
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, username: e.target.value })}
             fullWidth
             margin="normal"
           />
@@ -195,8 +199,8 @@ const SamplePage = () => {
             type='password'
             label="Mot de passe"
             variant="outlined"
-            value={selectedAdmin ? selectedAdmin.password_admin : ''}
-            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, password_admin: e.target.value })}
+            value="Changer mot de passe"
+            onChange={(e) => setSelectedAdmin({ ...selectedAdmin, password: e.target.value })}
             fullWidth
             margin="normal"
           />

@@ -6,6 +6,8 @@ import {
     Stack
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import CustomTextField from '../../../components/forms/theme-elements/CustomTextField';
 
@@ -15,37 +17,42 @@ const AuthLogin = ({ title, subtitle, subtext }) => {
 
     const handleLogin = async () => {
         try {
-            const competenceData = {
+            const loginData = {
                 username: username,
                 password: password,
                 email: username,
             };
-    
-            console.log('Competence data sent to backend:', competenceData);
-    
+
+            console.log('Competence data sent to backend:', loginData);
+
             const response = await fetch('http://localhost:3500/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(competenceData),
+                body: JSON.stringify(loginData),
             });
-    
+
             if (response.ok) {
                 const data = await response.json();
                 console.log('Response from backend:', data);
-    
+
                 // If needed, you can take other actions here
                 // For example, update the state or perform additional logic
-    
+
                 // If needed, you can clear the form or take other actions here
                 // setAddDialogOpen(false);
                 console.log('Sign-in successful');
+                // Save the authentication status in localStorage
+                localStorage.setItem('isAuthenticated', 'true');
                 // Redirect to the desired page
                 window.location.href = '/';
             } else {
                 // Handle non-successful response (e.g., display an error message)
                 console.error('Error:', response.status, response.statusText);
+
+                // Display a toast message in French
+                toast.error('Échec de la connexion. Veuillez vérifier vos identifiants.');
             }
         } catch (error) {
             console.error('Error:', error);

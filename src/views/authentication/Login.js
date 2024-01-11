@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Box, Card, Stack, Typography } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // components
 import PageContainer from 'src/components/container/PageContainer';
@@ -49,6 +51,7 @@ const Login2 = () => {
                 }
                
               />
+              <ToastContainer />
             </Card>
           </Grid>
         </Grid>

@@ -22,12 +22,17 @@ const Error = Loadable(lazy(() => import('../views/authentication/Error')));
 const Register = Loadable(lazy(() => import('../views/authentication/Register')));
 const Login = Loadable(lazy(() => import('../views/authentication/Login')));
 
+const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true' ? true : false;
+
+console.log(isAuthenticated)
+
+
 const Router = [
   {
     path: '/',
-    element: <FullLayout />,
+    element: isAuthenticated ? <FullLayout /> : <Navigate to="/auth/login" />,
     children: [
-      { path: '/', element: <Navigate to="/Acceuil" /> },
+      { path: '/', element: <Navigate to="/auth/login" /> },
       { path: '/Acceuil', exact: true, element: <Dashboard /> },
       { path: '/stage', exact: true, element: <Stage /> },
       { path: '/Students', exact: true, element: <Students /> },
@@ -47,11 +52,12 @@ const Router = [
   },
   {
     path: '/auth',
-    element: <BlankLayout />,
+    element: isAuthenticated ? <Navigate to="/Acceuil" /> : <BlankLayout />,
+
     children: [
       { path: '404', element: <Error /> },
-      { path: '/auth/register', element: <Register /> },
-      { path: '/auth/login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'login', element: <Login /> },
       { path: '*', element: <Navigate to="/auth/404" /> },
     ],
   },
