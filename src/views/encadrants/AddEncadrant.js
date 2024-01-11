@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-
-// import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-// import Modal from 'react-bootstrap/Modal';
-import { Modal, Button } from 'react-bootstrap';
-import { Box, Typography } from "@mui/material";
-  
-import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
-
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material";
 
 function AddEncadrants(){
 
@@ -59,7 +52,7 @@ function AddEncadrants(){
     //Add function
     return(
         <>
-            <Box style={{ textAlign: 'right' }}>
+            {/* <Box style={{ textAlign: 'right' }}>
                 <Button
                     color="primary"
                     style={{ backgroundColor: '#4570EA', color: 'white' }}
@@ -74,11 +67,28 @@ function AddEncadrants(){
                 >
                     Ajouter encadrant
                 </Button>
+            </Box> */}
+            <Box style={{ textAlign: 'right' }}>
+                <Button
+                    color="primary"
+                    // style={{ backgroundColor: '#4570EA', color: 'white' }}
+                    variant="contained"
+                    size="large"
+                    onClick={handleShow}
+                    primary
+                    // fullWidth
+                    // component={Link}
+                    // to="/"
+                    // type="submit"
+                >
+                    Ajouter encadrant
+                </Button>
             </Box>
+
 
             {/* Modal */}
 
-            <Modal show={show} onHide={handleClose}>
+            {/* <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                 <Modal.Title>Ajouter un Encadrant</Modal.Title>
                 </Modal.Header>
@@ -137,13 +147,73 @@ function AddEncadrants(){
                 </Button>
 
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
+                        <Dialog open={show} onClose={handleClose} fullWidth >
+                <DialogTitle>
+                    Ajouter un Encadrant
+                </DialogTitle>
+                <DialogContent>
+                <Form>
+                    <TextField
+                        label="Nom d'encadrant"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={nomEncadrant}
+                        onChange={(e) => setNomEncadrant(e.target.value)}
+                    />
 
+                    <TextField
+                        label="Prénom d'encadrant"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={prenomEncadrant}
+                        onChange={(e) => setPrenomEncadrant(e.target.value)}
+                    />
+
+                    <TextField
+                        label="Téléphone d'encadrant"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        type="tel"
+                        value={telephoneEncadrant}
+                        onChange={(e) => setTelephoneEncadrant(e.target.value)}
+                    />
+
+                    <TextField
+                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        label="Email d'encadrant"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        type="email"
+                        value={emailEncadrant}
+                        onChange={(e) => setEmailEncadrant(e.target.value)}
+                    />
+
+                </Form>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={ajouterEncadrant}
+                    >
+                        Ajouter
+                    </Button>
+                    <Button
+                        color="warning"
+                        variant="contained"
+                        onClick={handleClose}
+                    >
+                        Annuler
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
-
-
 }
-
 
 export default AddEncadrants;

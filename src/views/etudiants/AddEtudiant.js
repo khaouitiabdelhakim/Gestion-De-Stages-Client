@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
-import { Modal, Button } from 'react-bootstrap';
-import { Box, Typography } from "@mui/material";  
-import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
+import { Box, Button, MenuItem, Select, Typography } from "@mui/material";  
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+  } from '@mui/material';
+  import { TextField, FormControlLabel, Radio, RadioGroup, FormControl, InputAdornment } from '@mui/material';
 
 function AddEtudiant(){
 
@@ -74,7 +79,7 @@ function AddEtudiant(){
     //Add function
     return(
         <>
-            <Box style={{ textAlign: 'right' }}>
+            {/* <Box style={{ textAlign: 'right' }}>
                 <Button
                     color="primary"
                     style={{ backgroundColor: '#4570EA', color: 'white' }}
@@ -89,11 +94,22 @@ function AddEtudiant(){
                 >
                     Ajouter étudiant
                 </Button>
+            </Box> */}
+            <Box style={{ textAlign: 'right' }}>
+                <Button
+                    color="primary"
+                    variant="contained"
+                    size="large"
+                    onClick={handleShow}
+                    primary
+                >
+                    Ajouter étudiant
+                </Button>
             </Box>
 
             {/* Modal */}
 
-            <Modal show={show} onHide={handleClose}>
+            {/* <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                 <Modal.Title>Ajouter un Etudiant</Modal.Title>
                 </Modal.Header>
@@ -124,7 +140,6 @@ function AddEtudiant(){
                         <Typography variant="subtitle4"
                             fontWeight={600} component="label" htmlFor='sexe' mb="5px"><span className="me-5">Sexe</span>
                         </Typography>
-                        {/* <CustomTextField id="sexe" type="text" variant="outlined" fullWidth placeholder="Sexe"/> */}
                         <Form.Check
                             inline
                             label="F"
@@ -186,7 +201,6 @@ function AddEtudiant(){
                         <Typography variant="subtitle9"
                             fontWeight={600} component="label" htmlFor='mention' mb="5px">Mention
                         </Typography>
-                        {/* <CustomTextField id="mention" type="text" variant="outlined" fullWidth /> */}
                         <Form.Select
                             id="mention"
                             value={mention}
@@ -224,7 +238,175 @@ function AddEtudiant(){
                         Annuler
                     </Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
+                        <Dialog open={show} onClose={handleClose} fullWidth >
+                <DialogTitle>Ajouter un Etudiant</DialogTitle>
+                <DialogContent>
+                    <Form>
+                        <TextField
+                            margin="normal"
+                            label="Nom"
+                            id="nom"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Nom"
+                            value={nom}
+                            onChange={(e) => setNom(e.target.value)}
+                        />
+
+                        <TextField
+                            margin="normal"
+                            label="Prénom"
+                            id="prenom"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Prénom"
+                            value={prenom}
+                            onChange={(e) => setPrenom(e.target.value)}
+                        />
+
+                        <Box mt="20px">
+                            <Typography
+                                variant="subtitle3"
+                                fontWeight={600}
+                                component="label"
+                                htmlFor="dateNaissance"
+                                mb="5px"
+                            >
+                                Date de Naissance
+                            </Typography>
+                            <TextField
+                                margin="normal"
+                                id="dateNaissance"
+                                type="date"
+                                variant="outlined"
+                                fullWidth
+                                placeholder="Date de Naissance"
+                                value={dateNaissance}
+                                onChange={(e) => setDateNaissance(e.target.value)}
+                            />
+                        </Box>
+
+                        <Box mt="20px">
+                            <Typography
+                                variant="subtitle4"
+                                fontWeight={600}
+                                component="label"
+                                htmlFor="sexe"
+                                mb="5px"
+                            >
+                                <span className="me-5">Sexe</span>
+                            </Typography>
+                            <FormControl component="fieldset">
+                                <RadioGroup
+                                margin="normal"
+                                row
+                                value={sexe}
+                                onChange={(e) => setSexe(parseInt(e.target.value))}
+                                >
+                                <FormControlLabel value={0} control={<Radio />} label="F" />
+                                <FormControlLabel value={1} control={<Radio />} label="M" />
+                                </RadioGroup>
+                            </FormControl>
+                        </Box>
+
+                        <TextField
+                            margin="normal"
+                            label="Adresse"
+                            id="adresse"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Adresse"
+                            value={adresse}
+                            onChange={(e) => setAdresse(e.target.value)}
+                        />
+
+                        <TextField
+                            margin="normal"
+                            label="Téléphone"
+                            id="telephone"
+                            type="tel"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="212 6 11 22 33 44 "
+                            value={telephone}
+                            onChange={(e) => setTelephone(e.target.value)}
+                            InputProps={{
+                            startAdornment: <InputAdornment position="start">+</InputAdornment>,
+                            }}
+                        />
+
+                        <TextField
+                            label="Email"
+                            margin="normal"
+                            id="email"
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="xyz@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+
+                        <Box mt="25px">
+                            <Typography variant="subtitle8" fontWeight={600} component="label" htmlFor="anneePromotion" mb="5px">
+                            Promotion
+                            </Typography>
+                            <TextField
+                                label="Année de promotion"
+                                margin="normal"
+                                id="anneePromotion"
+                                type="number"
+                                variant="outlined"
+                                fullWidth
+                                placeholder="Année de promotion"
+                                value={anneePromotion}
+                                onChange={(e) => setAnneePromotion(e.target.value)}
+                            />
+                        </Box>
+
+                        <Box mt="25px">
+                            <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='mention' mb="5px">Mention</Typography>
+                            <Select
+                                label="Mention"
+                                margin="normal"
+                                id="mention"
+                                value={mention}
+                                onChange={(e) => setMention(e.target.value)}
+                                variant="outlined"
+                                fullWidth
+                            >
+                                <MenuItem value="Assez-Bien">Assez-Bien</MenuItem>
+                                <MenuItem value="Bien">Bien</MenuItem>
+                                <MenuItem value="Très Bien">Très Bien</MenuItem>
+                                <MenuItem value="Excellent">Excellent</MenuItem>
+                            </Select>
+                        </Box>
+                    </Form>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        color="primary"
+                        // style={{ backgroundColor: '#774ef2', color: 'white' }}
+                        variant="contained"
+                        onClick={ajouterEtudiant}
+                    >
+                        Ajouter
+                    </Button>
+                    <Button
+                        color="warning"
+                        // style={{ backgroundColor: '#f0737d', color: 'white' }}
+                        variant="contained"
+                        onClick={handleClose}
+                    >
+                        Annuler
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </>
     )
 }
