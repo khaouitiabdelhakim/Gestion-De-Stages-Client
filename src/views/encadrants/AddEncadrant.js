@@ -42,6 +42,7 @@ function AddEncadrants(){
             setEmailEncadrant('');
             setTelephoneEncadrant('');
             handleClose();
+            
         })
         .catch(error => {
             // Handle errors if any
