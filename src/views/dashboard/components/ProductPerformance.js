@@ -96,6 +96,7 @@ const filteredStages = stages.filter(stage => {
 
   const handleVoirPlusClick = () => {
     // Redirect to the /stage route
+    window.location.href = '/stage';
   
   };
     

@@ -106,11 +106,7 @@ const StageList = () => {
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-    const [selectedStage, setSelectedStage] = useState({
-        promotion: '',
-        nomEtudiant: '',
-        // Ajoute les autres champs ici avec leurs valeurs initiales
-    });
+    const [selectedStage, setSelectedStage] = useState({});
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [newStage, setNewStage] = useState({
@@ -165,21 +161,51 @@ const StageList = () => {
         }
     };
 
+
+   
     const handleEditClick = (index) => {
-        setSelectedStage(stages[index]);
-        console.log(selectedStage)
+        setSelectedStage({ ...stages[index] }); // Use spread operator to create a new object
         setSelectedStageIndex(index);
         setEditDialogOpen(true);
+        console.log(selectedStage)
     };
+    
 
-    const handleEditStage = (updatedStage) => {
-        const updatedStages = [...stages];
-        updatedStages[selectedStageIndex] = updatedStage;
-
-        console.log("updated stage", updatedStage)
-        // Mettre à jour l'état des stages avec les informations modifiées
-        // setStages(updatedStages);
-    };
+    const handleEditStage = async (updatedStage) => {
+        updatedStage = selectedStage
+        try {
+          // Prepare the data for the PUT request
+          const updatedStageData = {
+            appreciation_stage: updatedStage.appreciation_stage,
+            annee_de_stage: updatedStage.annee_de_stage,
+            no_etudiant: updatedStage.no_etudiant,
+            no_professeur: updatedStage.no_professeur,
+            no_encadrant: updatedStage.no_encadrant,
+            no_type: updatedStage.no_type,
+            no_entreprise: updatedStage.no_entreprise
+            // Add other fields as needed
+          };
+      
+          // Log the updated data
+          console.log('Updated Stage Data:', updatedStageData);
+      
+          // Send a PUT request to update the stage data
+          const putResponse = await axios.put(`http://localhost:3500/stage/${updatedStage.no_stage}`, updatedStageData);
+      
+          if (putResponse.status === 200) {
+            // If the update is successful, you can perform additional actions here
+            console.log('Stage updated successfully');
+      
+            // Close the edit dialog or perform other actions if needed
+            setEditDialogOpen(false);
+          } else {
+            console.error('Error updating stage:', putResponse.statusText);
+          }
+        } catch (error) {
+          console.error('Error updating stage:', error.message);
+        }
+      };
+      
 
     const handleConfirmation = (confirmed) => {
         if (confirmed && selectedStageIndex !== null) {
@@ -205,6 +231,7 @@ const StageList = () => {
 
 
     const filteredStages = stages.filter(stage => {
+
         const yearMatch = !yearFilter || (stage.annee_de_stage && stage.annee_de_stage.toString().toLowerCase().includes(yearFilter.toLowerCase()));
         const stageTypeMatch = !stageTypeFilter || (stage.no_type && stage.no_type.toString().toLowerCase().includes(stageTypeFilter.toLowerCase()));
 
@@ -233,14 +260,7 @@ const StageList = () => {
 
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <TextField
-                        label="Rechercher"
-                        variant="outlined"
-                        value={searchText}
-                        onChange={(e) => setSearchText(e.target.value)}
-                        sx={{ width: '30%', mr: 2 }}
-                    />
-
+                    
                     <TextField
                         select
                         label="Année"
@@ -262,11 +282,11 @@ const StageList = () => {
                         onChange={(e) => setStageTypeFilter(e.target.value)}
                         sx={{ width: '20%', mr: 2 }}
                     >
-                        <MenuItem value="1A">11</MenuItem>
-                        <MenuItem value="2A-1">21</MenuItem>
-                        <MenuItem value="2A-2">22</MenuItem>
-                        <MenuItem value="3A-1">31</MenuItem>
-                        <MenuItem value="3A-2">32</MenuItem>
+                        <MenuItem value="11">11</MenuItem>
+                        <MenuItem value="21">21</MenuItem>
+                        <MenuItem value="22">22</MenuItem>
+                        <MenuItem value="31">31</MenuItem>
+                        <MenuItem value="32">32</MenuItem>
                     </TextField>
                 </Box>
             </Box>
@@ -352,26 +372,7 @@ const StageList = () => {
             >
                 <DialogTitle>Modifier les informations du stage</DialogTitle>
                 <DialogContent>
-                    <Box mt="25px">
-                        <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Promotion' mb="5px">
-                            Promotion
-                        </Typography>
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <Select
-                                label="Promotion"
-                                value={selectedStage.promotion}
-                                onChange={(e) => setNewStage({ ...selectedStage, promotion: e.target.value })}
-                            >
-                                {promotions.map((promotion) => (
-                                    <MenuItem key={promotion.annee_promotion} value={promotion.annee_promotion}>
-                                        {promotion.annee_promotion}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-
-
+                    
                     <Box mt="25px">
                         <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Etudiant' mb="5px">
                             Étudiant
@@ -379,8 +380,8 @@ const StageList = () => {
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 label="Étudiant"
-                                value={selectedStage.etudiant}
-                                onChange={(e) => setNewStage({ ...selectedStage, etudiant: e.target.value })}
+                                value={selectedStage.no_etudiant}
+                                onChange={(e) => setSelectedStage({ ...selectedStage, no_etudiant: e.target.value })}
                             >
                                 {etudiants.map((etudiant) => (
                                     <MenuItem key={etudiant.no_etudiant} value={etudiant.no_etudiant}>
@@ -398,8 +399,8 @@ const StageList = () => {
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 label="Professeur"
-                                value={selectedStage.professeur}
-                                onChange={(e) => setNewStage({ ...selectedStage, professeur: e.target.value })}
+                                value={selectedStage.no_professeur}
+                                onChange={(e) => setSelectedStage({ ...selectedStage, no_professeur: e.target.value })}
                             >
                                 {professeurs.map((professeur) => (
                                     <MenuItem key={professeur.no_professeur} value={professeur.no_professeur}>
@@ -419,8 +420,8 @@ const StageList = () => {
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 label="Encadrant"
-                                value={selectedStage.encadrant}
-                                onChange={(e) => setNewStage({ ...selectedStage, encadrant: e.target.value })}
+                                value={selectedStage.no_encadrant}
+                                onChange={(e) => setSelectedStage({ ...selectedStage, no_encadrant: e.target.value })}
                             >
                                 {encadrants.map((encadrant) => (
                                     <MenuItem key={encadrant.no_encadrant} value={encadrant.no_encadrant}>
@@ -439,8 +440,8 @@ const StageList = () => {
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 label="Entreprise"
-                                value={selectedStage.entreprise}
-                                onChange={(e) => setNewStage({ ...selectedStage, entreprise: e.target.value })}
+                                value={selectedStage.no_entreprise}
+                                onChange={(e) => setSelectedStage({ ...selectedStage, no_entreprise: e.target.value })}
                             >
                                 {entreprises.map((entreprise) => (
                                     <MenuItem key={entreprise.no_entreprise} value={entreprise.no_entreprise}>
@@ -458,8 +459,8 @@ const StageList = () => {
                         <FormControl fullWidth variant="outlined" margin="normal">
                             <Select
                                 label="Type"
-                                value={selectedStage.type}
-                                onChange={(e) => setNewStage({ ...selectedStage, type: e.target.value })}
+                                value={selectedStage.no_type}
+                                onChange={(e) => setSelectedStage({ ...selectedStage, no_type: e.target.value })}
                             >
                                 {types.map((type) => (
                                     <MenuItem key={type.no_type} value={type.no_type}>
@@ -473,16 +474,16 @@ const StageList = () => {
                     <TextField
                         label="Année"
                         variant="outlined"
-                        value={selectedStage.annee}
-                        onChange={(e) => setNewStage({ ...selectedStage, annee: e.target.value })}
+                        value={formatDate(selectedStage.annee_de_stage)}
+                        onChange={(e) => setSelectedStage({ ...selectedStage, annee_de_stage: e.target.value })}
                         fullWidth
                         margin="normal"
                     />
                     <TextField
                         label="Compte Rendu"
                         variant="outlined"
-                        value={selectedStage.compteRendu}
-                        onChange={(e) => setNewStage({ ...selectedStage, compteRendu: e.target.value })}
+                        value={selectedStage.appreciation_stage}
+                        onChange={(e) => setSelectedStage({ ...selectedStage, appreciation_stage: e.target.value })}
                         fullWidth
                         margin="normal"
                     />
@@ -510,25 +511,7 @@ const StageList = () => {
             >
                 <DialogTitle>Ajouter un nouveau stage</DialogTitle>
                 <DialogContent>
-                    <Box mt="25px">
-                        <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Promotion' mb="5px">
-                            Promotion
-                        </Typography>
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <Select
-                                label="Promotion"
-                                value={newStage.promotion}
-                                onChange={(e) => setNewStage({ ...newStage, promotion: e.target.value })}
-                            >
-                                {promotions.map((promotion) => (
-                                    <MenuItem key={promotion.annee_promotion} value={promotion.annee_promotion}>
-                                        {promotion.annee_promotion}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-
+                
 
                     <Box mt="25px">
                         <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor='Etudiant' mb="5px">
