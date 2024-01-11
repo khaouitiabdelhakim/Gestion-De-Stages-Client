@@ -55,6 +55,8 @@ function AddProfesseur(){
             setTelephone("");
             setAdresse("");
             handleClose();
+
+            window.location.href = "/Professeurs"
         })
         .catch(error => {
             console.error('Error:', error);

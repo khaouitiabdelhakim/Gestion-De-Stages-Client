@@ -58,6 +58,8 @@ const UpdateProfesseur  = ({professeur  }) => {
         setAdresse("");
 
         handleClose();
+
+        window.location.href = "/Professeurs"
       } else {
         console.error('Erreur lors de la mise à jour :', putResponse.statusText);
       }

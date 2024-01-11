@@ -49,6 +49,8 @@ const UpdateEncadrant = ({encadrant }) => {
             setEmailEncadrant("");
             setTelephoneEncadrant("");
             handleClose();
+
+            window.location.href = "/Encadrants"
             
         })
 

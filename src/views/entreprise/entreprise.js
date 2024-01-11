@@ -75,6 +75,8 @@ const handleAddNewentreprise = async (newentreprise) => {
 
     // Close the add dialog
     setAddDialogOpen(false);
+
+    window.location.href = "/entreprise"
   } catch (error) {
     console.error('Error creating new enterprise', error);
     // Handle error, show a message to the user, etc.
@@ -103,6 +105,7 @@ const handleEditentreprise = async (updatedentreprise) => {
 
     // Close the edit dialog
     setEditDialogOpen(false);
+    window.location.href = "/entreprise"
   } catch (error) {
     console.error('Error updating enterprise', error);
     // Handle error, show a message to the user, etc.

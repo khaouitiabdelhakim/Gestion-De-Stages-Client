@@ -146,6 +146,8 @@ const StageList = () => {
 
                     // If needed, you can clear the form or take other actions here
                     setAddDialogOpen(false);
+
+                    window.location.href = "/stage"
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -198,6 +200,7 @@ const StageList = () => {
       
             // Close the edit dialog or perform other actions if needed
             setEditDialogOpen(false);
+            window.location.href = "/stage"
           } else {
             console.error('Error updating stage:', putResponse.statusText);
           }

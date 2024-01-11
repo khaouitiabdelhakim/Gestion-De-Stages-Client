@@ -67,6 +67,8 @@ function AddEtudiant(){
             setTelephone("");
             setAdresse("");
             handleClose();
+
+            window.location.href = "/Students"
         })
         .catch(error => {
             console.error('Error:', error);

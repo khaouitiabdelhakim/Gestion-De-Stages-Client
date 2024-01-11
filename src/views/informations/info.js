@@ -189,6 +189,8 @@ const Info = () => {
 
                     // If needed, you can clear the form or take other actions here
                     // setAddDialogOpen(false);
+
+                    window.location.href = "/informations"
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -245,6 +247,8 @@ const Info = () => {
 
                     // If needed, you can clear the form or take other actions here
                     // setAddDialogOpen(false);
+
+                    window.location.href = "/informations"
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -295,6 +299,8 @@ const Info = () => {
 
                     // If needed, you can clear the form or take other actions here
                     // setAddDialogOpen(false);
+
+                    window.location.href = "/informations"
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -348,6 +354,7 @@ const handleAddNewAssociation = async (newAssociation) => {
 
             // If needed, you can clear the form or take other actions here
             // setAddDialogOpen(false);
+            window.location.href = "/informations"
         })
         .catch(error => {
             console.error('Error:', error);

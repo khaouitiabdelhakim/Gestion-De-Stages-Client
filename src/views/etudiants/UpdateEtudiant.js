@@ -77,6 +77,8 @@ const ModifierEtudiant = async () => {
       setMention("");
 
       handleClose();
+
+      window.location.href = "/Students"
     } else {
       console.error('Erreur lors de la mise à jour :', putResponse.statusText);
     }
