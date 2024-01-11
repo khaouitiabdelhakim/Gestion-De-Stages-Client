@@ -96,6 +96,7 @@
 
 
       const [searchText, setSearchText] = useState('');
+      
       const [promotionFilter, setPromotionFilter] = useState('');
       const [yearFilter, setYearFilter] = useState('');
       const [stageTypeFilter, setStageTypeFilter] = useState('');
@@ -187,8 +188,19 @@
       setConfirmationDialogOpen(false);
       setSelectedStageIndex(null);
   };
+
+
+  const getFilteredItems = (query, stages) => {
+    if(!query){
+        return stages;
+    }
+    const lowerCaseQuery = query.toLowerCase();
+    return stages.filter(stage => stage.nom_etudiantr.toLowerCase().includes(lowerCaseQuery))
+}
+
+
   const filteredStages = stages.filter(stage => {
-    const yearMatch = !yearFilter || (stage.annee && stage.annee_de_stage.toString().toLowerCase().includes(yearFilter.toLowerCase()));
+    const yearMatch = !yearFilter || (stage.annee_de_stage && stage.annee_de_stage.toString().toLowerCase().includes(yearFilter.toLowerCase()));
     const stageTypeMatch = !stageTypeFilter || (stage.no_type && stage.no_type.toString().toLowerCase().includes(stageTypeFilter.toLowerCase()));
 
     return  yearMatch && stageTypeMatch;

@@ -36,7 +36,7 @@ const Dashboard = () => {
             <ProductPerformance />
           </Grid>
           <Grid item xs={12}>
-            <Blog />
+            {/** <Blog /> for campanies*/}
           </Grid>
         </Grid>
       </Box>
