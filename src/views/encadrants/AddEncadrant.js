@@ -42,6 +42,8 @@ function AddEncadrants(){
             setEmailEncadrant('');
             setTelephoneEncadrant('');
             handleClose();
+
+            window.location.href = "/Encadrants"
             
         })
         .catch(error => {
