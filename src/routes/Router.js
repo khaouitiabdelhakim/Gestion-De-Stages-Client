@@ -7,6 +7,7 @@ const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
 const BlankLayout = Loadable(lazy(() => import('../layouts/blank/BlankLayout')));
 
 /* ****Pages***** */
+const Info = Loadable(lazy(() => import('../views/informations/info')))
 const Stage = Loadable(lazy(() => import('../views/stage/stage')))
 const Students = Loadable(lazy(() => import('../views/etudiants/Students')))
 const Encadrants = Loadable(lazy(() => import('../views/encadrants/Encadrants')))
@@ -34,6 +35,7 @@ const Router = [
       { path: '/Encadrants', exact: true, element: <Encadrants /> },
       { path: '/entreprise', exact: true, element: <Entreprise /> },
       { path: '/profile', exact: true, element: <SamplePage /> },
+      { path: '/informations', exact: true, element: <Info /> },
       { path: '/', exact: true, element: <SamplePage /> },
 
 

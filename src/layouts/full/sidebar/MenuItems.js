@@ -1,5 +1,5 @@
 import {
-  IconBuildingSkyscraper , IconUserCircle, IconBriefcase , IconUserCheck , IconSchool ,IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconUser,
+  IconBuildingSkyscraper, IconInfoCircle , IconUserCircle, IconBriefcase , IconUserCheck , IconSchool ,IconAperture, IconCopy, IconLayoutDashboard, IconLogin, IconMoodHappy, IconTypography, IconUserPlus, IconUser,
 } from '@tabler/icons';
 
 import { uniqueId } from 'lodash';
@@ -22,6 +22,12 @@ const Menuitems = [
     title: 'Stage',
     icon: IconBriefcase,
     href: '/stage',
+  },
+  {
+    id: uniqueId(),
+    title: 'Informations',
+    icon: IconInfoCircle,
+    href: '/informations',
   },
   {
     navlabel: true,
