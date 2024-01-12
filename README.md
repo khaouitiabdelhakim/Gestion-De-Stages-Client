@@ -1,5 +1,8 @@
 # Internship Management Web App
 
+![alt text](https://github.com/khaouitiabdelhakim/Gestion-De-Stages-Client/blob/main/stage.png)
+
+
 ## Overview
 
 This centralized web application serves as a comprehensive platform for managing internships at our school. Authenticated administrators have exclusive access to add students, teachers, mentors, and companies, as well as visualize and oversee all internship-related activities.
