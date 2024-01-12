@@ -63,7 +63,7 @@ This centralized web application serves as a comprehensive platform for managing
 This project is licensed under the MIT License 
 
 ```
-Copyright 2024 KHAOUITI ABDELHAKIM
+Copyright 2024 KHAOUITI ABDELHAKIM, BENGMAH AnassEL, ARGOUBI El Mehdi
 
 Licensed under the MIT License
 You may obtain a copy of the License at
