@@ -35,7 +35,7 @@ This centralized web application serves as a comprehensive platform for managing
 
    ```bash
    git clone https://github.com/your-username/internship-management-web-app.git
-   cd internship-management-web-app
+   cd Gestion-De-Stages-Client
    ```
 
 2. Install dependencies:
@@ -56,18 +56,25 @@ This centralized web application serves as a comprehensive platform for managing
 
 - The application might require configuration for connecting to a database or authentication service. Update the configuration files accordingly.
 
-## Contributing
-
-We welcome contributions! Please follow the [contribution guidelines](CONTRIBUTING.md) for this project.
-
 ## License
+This project is licensed under the MIT License 
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+Copyright 2024 KHAOUITI ABDELHAKIM
+
+Licensed under the MIT License
+You may obtain a copy of the License at
+
+http://opensource.org/licenses/MIT
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the MIT License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the MIT License.
+```
 
 ## Acknowledgments
 
 - Special thanks to the creators of React, React Bootstrap, and Material-UI for their amazing work.
 
----
-
-Feel free to adapt the sections as needed and include any additional details that would provide more clarity or guidance for users and contributors.
