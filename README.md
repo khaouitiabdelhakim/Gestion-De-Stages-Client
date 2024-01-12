@@ -1,7 +1,3 @@
-Certainly! Based on your additional information, I've made some adjustments to the README template to highlight the centralized nature of the web app and the roles of authenticated administrators. Feel free to further customize it according to your specific needs.
-
----
-
 # Internship Management Web App
 
 ## Overview
