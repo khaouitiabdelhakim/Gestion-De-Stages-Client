@@ -148,7 +148,7 @@ const handleEditentreprise = async (updatedentreprise) => {
       <DashboardCard
             title="Liste des entreprises"
             action={
-                <Button variant="outlined" onClick={handleAddentreprise} style={{ backgroundColor: 'green', color: 'white' }}>
+                <Button variant="outlined" onClick={handleAddentreprise} color='primary'>
                     Ajouter entreprise
                 </Button>
             }> 

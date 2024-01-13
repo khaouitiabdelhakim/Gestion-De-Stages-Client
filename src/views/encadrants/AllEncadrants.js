@@ -14,9 +14,6 @@ import UpdateEtudiant from './UpdateEncadrant';
 import AddEncadrant from './AddEncadrant';
 
 
-
-
-
 const getFilteredItems = (query, encadrants) => {
     if(!query){
         return encadrants;
@@ -139,11 +136,6 @@ const AllEncadrants = () => {
                                     <TableCell>
                                         <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
                                             {encadrant.telephone_encadrant}
-                                        </Typography>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Typography color="textSecondary" variant="subtitle2" fontWeight={400}>
-                                            {encadrant.email_encadrant}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>

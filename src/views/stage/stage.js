@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import DashboardCard from '../../components/shared/DashboardCard';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -255,7 +254,7 @@ const StageList = () => {
         <DashboardCard
             title="Liste des Stages"
             action={
-                <Button variant="outlined" onClick={handleAddStage} style={{ backgroundColor: 'green', color: 'white' }}>
+                <Button variant="outlined" onClick={handleAddStage} >
                     Ajouter stage
                 </Button>
             }>

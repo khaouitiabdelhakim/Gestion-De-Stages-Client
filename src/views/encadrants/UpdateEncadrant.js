@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
-import { Modal, Button } from 'react-bootstrap';
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import axios from 'axios';
-import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
-
 
 const UpdateEncadrant = ({encadrant }) => {
-
 
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
@@ -58,8 +54,6 @@ const UpdateEncadrant = ({encadrant }) => {
     };
     
           
- 
-
     useEffect(() => {
         // Mettez à jour les champs lorsque l'étudiant change
         setNomEncadrant(encadrant ? encadrant.nomEncadrant : "");
@@ -72,9 +66,6 @@ const UpdateEncadrant = ({encadrant }) => {
         <>
             <Box>
                 <Button
-                    color="secondary"
-                    // style={{ backgroundColor: '#774ef2', color: 'white' }}
-                    variant="contained"
                     size="small"
                     onClick={handleShow}
                 >
@@ -82,65 +73,75 @@ const UpdateEncadrant = ({encadrant }) => {
                 </Button>
             </Box>
               
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modifier un Encadrant</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <Dialog open={showModal} onClose={handleClose}>
+                    <DialogTitle>Modifier un Encadrant</DialogTitle>
+                <DialogContent>
                     <Form>
-                    <Box mt="25px">
-                        <Typography variant="subtitle1" fontWeight={600} component="label" htmlFor="nomEncadrant" mb="5px">
-                        Nom Encadrant
-                        </Typography>
-                        <CustomTextField id="nomEncadrant" type="text" variant="outlined" fullWidth placeholder="Nom Encadrant" value={nomEncadrant} onChange={(e) => setNomEncadrant(e.target.value)} />
-                    </Box>
+                        <TextField
+                            margin="normal"
+                            id="nomEncadrant"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            label="Nom d'encadrant"
+                            value={nomEncadrant}
+                            onChange={(e) => setNomEncadrant(e.target.value)}
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle1" fontWeight={600} component="label" htmlFor="prenomEncadrant" mb="5px">
-                        Prénom Encadrant
-                    </Typography>
-                    <CustomTextField id="prenomEncadrant" type="text" variant="outlined" fullWidth placeholder="Prénom" value={prenomEncadrant} onChange={(e) => setPrenomEncadrant(e.target.value)} />
-                    </Box>
-                    <Box mt="25px">
-                    <Typography variant="subtitle6" fontWeight={600} component="label" htmlFor="telephoneEncadrant" mb="5px">
-                        Téléphone Encadrant
-                    </Typography>
-                    <CustomTextField id="telephoneEncadrant" type="number" variant="outlined" fullWidth placeholder="05 22 33 44 55" value={telephoneEncadrant} onChange={(e) => setTelephoneEncadrant(e.target.value)} />
-                    </Box>
+                        <TextField
+                            margin="normal"
+                            id="prenomEncadrant"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            label="Prénom d'encadrant"
+                            value={prenomEncadrant}
+                            onChange={(e) => setPrenomEncadrant(e.target.value)}
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle7" fontWeight={600} component="label" htmlFor="emailEncadrant" mb="5px">
-                        Email Encadrant
-                    </Typography>
-                    <CustomTextField id="emailEncadrant" type="email" variant="outlined" fullWidth placeholder="xyz@email.com" value={emailEncadrant} onChange={(e) => setEmailEncadrant(e.target.value)} />
-                    </Box>
+                        <TextField
+                            margin="normal"
+                            id="telephoneEncadrant"
+                            type="tel"
+                            variant="outlined"
+                            fullWidth
+                            label="Téléphone d'encadrant"
+                            placeholder="05 22 33 44 55"
+                            value={telephoneEncadrant}
+                            onChange={(e) => setTelephoneEncadrant(e.target.value)}
+                        />
 
-                  </Form>
-                </Modal.Body>
-                <Modal.Footer>
+                        <TextField
+                            margin="normal"
+                            id="emailEncadrant"
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                            label="Email d'encadrant"
+                            value={emailEncadrant}
+                            onChange={(e) => setEmailEncadrant(e.target.value)}
+                        />
+
+                    </Form>
+                </DialogContent>
+                <DialogActions>
                     <Button
                     color="primary"
-                    style={{ backgroundColor: '#774ef2', color: 'white' }} // Set the background color and text color  
                     variant="contained"
-                    size="large"
-                    fullWidth
                     onClick={ModifierEncadrant}
                     >
                         Modifier
                     </Button>
 
                     <Button
-                        color="primary"
-                        style={{ backgroundColor: '#f0737d', color: 'white' }} // Set the background color and text color  
+                        color="warning"
                         variant="contained"
-                        size="large"
-                        fullWidth
                         onClick={handleClose}
                     >
                         Annuler
                     </Button>
-                </Modal.Footer>
-            </Modal>        
+                </DialogActions>
+            </Dialog>        
         </>
     )
 };

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
-import { Modal, Button } from 'react-bootstrap';
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, RadioGroup, TextField, Radio, Select, MenuItem } from "@mui/material";
 import axios from 'axios';
   
-import CustomTextField from "src/components/forms/theme-elements/CustomTextField";
 
 const UpdateEtudiant = ({etudiant}) => {
 
@@ -38,7 +36,6 @@ const UpdateEtudiant = ({etudiant}) => {
         const [anneePromotion, setAnneePromotion] = useState(etudiant ? etudiant.anneePromotion : "");
         const [mention, setMention] = useState(etudiant ? etudiant.mention : "");
       
-        
 
 const ModifierEtudiant = async () => {
   const apiEndpoint = 'http://localhost:3500'; // Replace with your actual API endpoint
@@ -105,9 +102,6 @@ const ModifierEtudiant = async () => {
         <>
             <Box>
                 <Button
-                    color="secondary"
-                    // style={{ backgroundColor: '#774ef2', color: 'white' }}
-                    variant="contained"
                     size="small"
                     onClick={handleShow}
                 >
@@ -116,127 +110,147 @@ const ModifierEtudiant = async () => {
 
             </Box>
               
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modifier un étudiant</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
+            <Dialog open={showModal} onClose={handleClose}>
+                <DialogTitle>Modifier un étudiant</DialogTitle>
+                <DialogContent>
                     <Form>
-                    <Box mt="25px">
-                        <Typography variant="subtitle1" fontWeight={600} component="label" htmlFor="nom" mb="5px">
-                        Nom
-                        </Typography>
-                        <CustomTextField id="nom" type="text" variant="outlined" fullWidth placeholder="Nom" value={nom} onChange={(e) => setNom(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="nom"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Nom"
+                            value={nom}
+                            onChange={(e) => setNom(e.target.value)}
+                            label="Nom d'étudiant"
+                            margin="normal"
+                            className="mt-4"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle1" fontWeight={600} component="label" htmlFor="prenom" mb="5px">
-                        Prénom
-                    </Typography>
-                    <CustomTextField id="prenom" type="text" variant="outlined" fullWidth placeholder="Prénom" value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="prenom"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Prénom"
+                            value={prenom}
+                            onChange={(e) => setPrenom(e.target.value)}
+                            label="Prénom d'étudiant"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle3" fontWeight={600} component="label" htmlFor="dateNaissance" mb="5px">
-                        Date de Naissance
-                    </Typography>
-                    <CustomTextField id="dateNaissance" type="date" variant="outlined" fullWidth placeholder="Date de Naissance" value={dateNaissance} onChange={(e) => setDateNaissance(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="dateNaissance"
+                            type="date"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Date de Naissance"
+                            value={dateNaissance}
+                            onChange={(e) => setDateNaissance(e.target.value)}
+                            label="Date de Naissance"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle4" fontWeight={600} component="label" htmlFor="sexe" className="me-5" mb="5px">
-                        Sexe
-                    </Typography>
-                    <Form.Check
-                        inline
-                        label="F"
-                        type="radio"
-                        id="Feminin"
-                        value="0"
-                        checked={!sexe}
-                        onChange={() => setSexe(0)}
-                    />
-                    <Form.Check
-                        inline
-                        label="M"
-                        type="radio"
-                        id="Masculin"
-                        value="1"
-                        checked={sexe}
-                        onChange={() => setSexe(1)}
-                    />
-                    </Box>
+                        <Box mt="13px" >
+                            <label htmlFor="sexe" style={{ fontWeight: 600, marginRight: '5px', marginBottom: '5px' }}>
+                                Sexe
+                            </label>
+                            <RadioGroup row value={sexe} onChange={(e) => setSexe(parseInt(e.target.value))}>
+                                <FormControlLabel value={0} control={<Radio />} label="F" />
+                                <FormControlLabel value={1} control={<Radio />} label="M" />
+                            </RadioGroup>
+                        </Box>
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle5" fontWeight={600} component="label" htmlFor="adresse" mb="5px">
-                        Adresse
-                    </Typography>
-                    <CustomTextField id="adresse" type="text" variant="outlined" fullWidth placeholder="Adresse" value={adresse} onChange={(e) => setAdresse(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="adresse"
+                            type="text"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Adresse"
+                            value={adresse}
+                            onChange={(e) => setAdresse(e.target.value)}
+                            label="Adresse"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle6" fontWeight={600} component="label" htmlFor="telephone" mb="5px">
-                        Téléphone
-                    </Typography>
-                    <CustomTextField id="telephone" type="number" variant="outlined" fullWidth placeholder="0500000000" value={telephone} onChange={(e) => setTelephone(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="telephone"
+                            type="tel"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="05 00 00 00 00"
+                            value={telephone}
+                            onChange={(e) => setTelephone(e.target.value)}
+                            label="Téléphone d'étudiant"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle7" fontWeight={600} component="label" htmlFor="email" mb="5px">
-                        Email
-                    </Typography>
-                    <CustomTextField id="email" type="email" variant="outlined" fullWidth placeholder="xyz@email.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="email"
+                            type="email"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="xyz@email.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            label="Email d'étudiant"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle8" fontWeight={600} component="label" htmlFor="anneePromotion" mb="5px">
-                        Promotion
-                    </Typography>
-                    <CustomTextField id="anneePromotion" type="number" variant="outlined" fullWidth placeholder="Année de promotion" value={anneePromotion} onChange={(e) => setAnneePromotion(e.target.value)} />
-                    </Box>
+                        <TextField
+                            id="anneePromotion"
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Année de promotion"
+                            value={anneePromotion}
+                            onChange={(e) => setAnneePromotion(e.target.value)}
+                            label="Année de promotion"
+                            margin="normal"
+                        />
 
-                    <Box mt="25px">
-                    <Typography variant="subtitle9" fontWeight={600} component="label" htmlFor="mention" mb="5px">
-                        Mention
-                    </Typography>
-                    <Form.Select
-                        id="mention"
-                        value={mention}
-                        onChange={(e) => setMention(e.target.value)}
-                    >
-                        <option value="">Choisir la Mention</option>
-                        <option value="Assez-Bien">Assez-Bien</option>
-                        <option value="Bien">Bien</option>
-                        <option value="Très Bien">Très Bien</option>
-                        <option value="Excellent">Excellent</option>
-                    </Form.Select>
-                    </Box>
-                  </Form>
-                </Modal.Body>
-                <Modal.Footer>
+                        <Box mt="10px">
+                            <label htmlFor="mention" style={{ fontWeight: 600, marginBottom: '5px' }}>
+                                Mention
+                            </label>
+                            <Select
+                                id="mention"
+                                value={mention}
+                                onChange={(e) => setMention(e.target.value)}
+                                displayEmpty
+                                label="Mention"
+                                margin="normal"
+                                fullWidth
+                            >
+                                <MenuItem disabled>Choisir la Mention</MenuItem>
+                                <MenuItem value="Assez-Bien">Assez-Bien</MenuItem>
+                                <MenuItem value="Bien">Bien</MenuItem>
+                                <MenuItem value="Très Bien">Très Bien</MenuItem>
+                                <MenuItem value="Excellent">Excellent</MenuItem>
+                            </Select>  
+                        </Box>
+                    </Form>
+                </DialogContent>
+                <DialogActions>
                     <Button
                     color="primary"
-                    style={{ backgroundColor: '#774ef2', color: 'white' }} // Set the background color and text color  
                     variant="contained"
-                    size="large"
-                    fullWidth
+                    size="medium"
                     onClick={ModifierEtudiant}
                     >
                         Modifier
                     </Button>
 
                     <Button
-                        color="primary"
-                        style={{ backgroundColor: '#f0737d', color: 'white' }} // Set the background color and text color  
+                        color="warning"
                         variant="contained"
-                        size="large"
-                        fullWidth
+                        size="medium"
                         onClick={handleClose}
                     >
                         Annuler
                     </Button>
-                </Modal.Footer>
-            </Modal>       
+                </DialogActions>
+            </Dialog>       
         </>
     )
 };
